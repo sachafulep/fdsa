@@ -1,12 +1,19 @@
+require 'bundler/setup'
+require 'gtk4_layer_shell/preload'
+require 'gtk4_layer_shell'
+require 'gtk4'
+
 class Launcher < Gtk::Box
     def initialize(window)
         super(:horizontal)
 
         @window = window
 
+        add_css_class('launcher')
+
         connect_signals
 
-        append(Gtk::Label.new(''))
+        append(label)
         append(entry)
     end
 
@@ -22,6 +29,7 @@ class Launcher < Gtk::Box
             instance.set_focusable(true)
             instance.set_sensitive(true)
             instance.set_has_frame(false)
+            instance.add_css_class('launcher__entry')
 
             instance
         end
@@ -33,11 +41,19 @@ class Launcher < Gtk::Box
         entry.signal_connect('activate') do
             command = entry.text.strip
 
-            system(command)
+            Thread.new { system(command) }
 
             entry.text = ''
 
             @window.set_visible(false)
         end
+    end
+
+    def label
+        instance = Gtk::Label.new('')
+        
+        instance.add_css_class('launcher__label')
+
+        instance
     end
 end

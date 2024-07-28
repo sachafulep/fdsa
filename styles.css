@@ -17,3 +17,17 @@
     margin-bottom: 10px;
     padding: 12.5px 10px;
 }
+
+.launcher {
+    padding: 20px;
+}
+
+.launcher__label {
+    font-size: xx-large;
+}
+
+.launcher__entry {
+    min-width: 500px;
+    margin-left: 20px;
+    font-size: x-large;
+}

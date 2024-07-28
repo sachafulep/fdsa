@@ -29,7 +29,7 @@ class Button < Gtk::Box
         click_gesture = Gtk::GestureClick.new
 
         click_gesture.signal_connect('pressed') do |gesture, n_press, x, y|
-            system(@command)
+            Thread.new { system(@command) }
         end
     
         add_controller(click_gesture)
