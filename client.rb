@@ -22,9 +22,6 @@ rescue
   socket = TCPSocket.new(SERVER_ADDRESS, PORT)
 end
 
-puts socket
-puts message
-
 socket.puts(message)
 
 socket.close

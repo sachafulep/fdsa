@@ -56,6 +56,7 @@ def create_launcher
     @window_launcher.set_transient_for(@window_main)
     @window_launcher.set_child(@launcher)
     @window_launcher.set_can_focus(true)
+    @window_launcher.set_visible(true)
     @window_launcher.set_visible(false)
 end
 
