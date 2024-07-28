@@ -48,7 +48,7 @@ def create_launcher
     Gtk4LayerShell.set_anchor(@window_launcher, Gtk4LayerShell::Edge::TOP, 1)
     Gtk4LayerShell.set_margin(@window_launcher, Gtk4LayerShell::Edge::TOP, 550)
     Gtk4LayerShell.set_layer(@window_launcher, Gtk4LayerShell::Layer::TOP)
-    Gtk4LayerShell.set_keyboard_mode(@window_launcher, Gtk4LayerShell::KeyboardMode::ON_DEMAND)
+    Gtk4LayerShell.set_keyboard_mode(@window_launcher, Gtk4LayerShell::KeyboardMode::EXCLUSIVE)
 
     @launcher = Launcher.new(@window_launcher)
     @entry = @launcher.entry
