@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 $LOAD_PATH.unshift(File.join(__dir__, 'widgets'))
 
 Dir[File.join(__dir__, 'widgets/**/*.rb')].sort.each { |file| require file }
@@ -36,9 +38,11 @@ def create_bar
 
     Gtk4LayerShell.set_anchor(@window_bar, Gtk4LayerShell::Edge::LEFT, 1)
 
-    @window_bar.set_default_size(0, 1380)
+    # @window_bar.set_default_size(0, 1380)
+    @window_bar.set_default_size(0, 1005)
     @window_bar.set_child(Bar.new)
     @window_bar.set_visible(true)
+    @window_bar.add_css_class('window-bar')
 end
 
 def create_launcher
@@ -46,7 +50,8 @@ def create_launcher
 
     Gtk4LayerShell.init_for_window(@window_launcher)
     Gtk4LayerShell.set_anchor(@window_launcher, Gtk4LayerShell::Edge::TOP, 1)
-    Gtk4LayerShell.set_margin(@window_launcher, Gtk4LayerShell::Edge::TOP, 550)
+    # Gtk4LayerShell.set_margin(@window_launcher, Gtk4LayerShell::Edge::TOP, 550)
+    Gtk4LayerShell.set_margin(@window_launcher, Gtk4LayerShell::Edge::TOP, 350)
     Gtk4LayerShell.set_layer(@window_launcher, Gtk4LayerShell::Layer::TOP)
     Gtk4LayerShell.set_keyboard_mode(@window_launcher, Gtk4LayerShell::KeyboardMode::EXCLUSIVE)
 
@@ -56,6 +61,7 @@ def create_launcher
     @window_launcher.set_transient_for(@window_main)
     @window_launcher.set_child(@launcher)
     @window_launcher.set_can_focus(true)
+    @window_launcher.add_css_class('window-launcher')
     @window_launcher.set_visible(true)
     @window_launcher.set_visible(false)
 end
