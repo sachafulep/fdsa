@@ -7,7 +7,7 @@ class Battery < Gtk::Box
         append(icon_label)
         append(Gtk::Label.new(percentage))
 
-        GLib::Timeout.add(5000000) do
+        GLib::Timeout.add(300000) do
             update_percentage
             
             true
