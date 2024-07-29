@@ -7,6 +7,7 @@ class Bar < Gtk::Box
         set_valign(:end)
 
         append_audio
+        append_battery
         append_clock
         append_power_buttons
     end
@@ -15,6 +16,12 @@ class Bar < Gtk::Box
 
     def append_audio
         append(Audio.new.revealer)
+    end
+
+    def append_battery
+        return if DeviceService.desktop?
+
+        append(Battery.new)
     end
 
     def append_clock

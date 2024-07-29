@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
-$LOAD_PATH.unshift(File.join(__dir__, 'widgets'))
-
 Dir[File.join(__dir__, 'widgets/**/*.rb')].sort.each { |file| require file }
+Dir[File.join(__dir__, 'services/**/*.rb')].sort.each { |file| require file }
 
 require 'socket'
 
