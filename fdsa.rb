@@ -38,7 +38,7 @@ def create_bar
     Gtk4LayerShell.set_anchor(@window_bar, Gtk4LayerShell::Edge::LEFT, 1)
 
     # @window_bar.set_default_size(0, 1380)
-    @window_bar.set_default_size(0, 1005)
+    @window_bar.set_default_size(0, 1007)
     @window_bar.set_child(Bar.new)
     @window_bar.set_visible(true)
     @window_bar.add_css_class('window-bar')

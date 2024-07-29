@@ -4,7 +4,7 @@ class Battery < Gtk::Box
 
         add_css_class('item')
 
-        append(icon)
+        append(icon_label)
         append(Gtk::Label.new(percentage))
 
         GLib::Timeout.add(5000000) do
@@ -17,17 +17,20 @@ class Battery < Gtk::Box
     private
 
     def update_percentage
+        children[1].set_text(icon)
         children[2].set_text(percentage)
     end
 
-    def icon
-        icon = DeviceService.charging? ? '' : ''
-        
+    def icon_label
         label = Gtk::Label.new(icon)
 
         label.add_css_class('item__icon')
 
         label
+    end
+    
+    def icon
+        DeviceService.charging? ? '' : ''
     end
 
     def percentage
