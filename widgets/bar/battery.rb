@@ -17,8 +17,8 @@ class Battery < Gtk::Box
     private
 
     def update_percentage
-        children[1].set_text(icon)
-        children[2].set_text(percentage)
+        children[0].set_text(icon)
+        children[1].set_text(percentage)
     end
 
     def icon_label
