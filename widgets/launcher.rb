@@ -41,11 +41,20 @@ class Launcher < Gtk::Box
         entry.signal_connect('activate') do
             command = entry.text.strip
 
-            Thread.new { system(command) }
+            Thread.new { system(parse_command(command)) }
 
             entry.text = ''
 
             @window.set_visible(false)
+        end
+    end
+
+    def parse_command(command)
+        case command 
+        when 'spotify'
+            'spotify-launcher'
+        else
+            command
         end
     end
 

@@ -1,9 +1,10 @@
 class Button < Gtk::Box
-    def initialize(orientation: :vertical, spacing: 0, icon: '?', command: '')
+    def initialize(orientation: :vertical, spacing: 0, icon: '?', command: nil, &block)
         super(orientation, spacing)
 
         @icon = icon
         @command = command
+        @block = block
 
         add_css_class('item')
 
@@ -29,7 +30,9 @@ class Button < Gtk::Box
         click_gesture = Gtk::GestureClick.new
 
         click_gesture.signal_connect('pressed') do |gesture, n_press, x, y|
-            Thread.new { system(@command) }
+            Thread.new { system(@command) } if @command
+
+            @block.call if @block
         end
     
         add_controller(click_gesture)

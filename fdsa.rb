@@ -9,6 +9,8 @@ require 'gtk4_layer_shell/preload'
 require 'gtk4_layer_shell'
 require 'gtk4'
 
+$windows = {}
+
 @application = Gtk::Application.new('org.gtk.fdsa', :flags_none)
 
 @application.signal_connect 'activate' do |app|
@@ -39,6 +41,8 @@ def create_bar
     @window_bar.set_default_size(0, 1380)
     @window_bar.set_child(Bar.new)
     @window_bar.set_visible(true)
+
+    $windows[:bar] = @window_bar
 end
 
 def create_launcher
@@ -58,6 +62,8 @@ def create_launcher
     @window_launcher.set_can_focus(true)
     @window_launcher.set_visible(true)
     @window_launcher.set_visible(false)
+
+    $windows[:launcher] = @window_launcher
 end
 
 def load_css

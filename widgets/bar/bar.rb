@@ -1,27 +1,40 @@
-class Bar < Gtk::Box
+class Bar < Gtk::CenterBox
     def initialize
-        super(:vertical, 10)
+        super
+
+        set_orientation(:vertical)
 
         add_css_class('bar')
 
-        set_valign(:end)
-
-        append_audio
-        append_clock
-        append_power_buttons
+        append_top
+        append_bottom
     end
 
     private
 
-    def append_audio
-        append(Audio.new.revealer)
+    def append_top
+        box = Gtk::Box.new(:vertical, 10)
+
+        box.set_vexpand(true)
+
+        box.append(
+            Button.new(icon: '') do
+                window = $windows[:launcher]
+
+                window.set_visible(!window.visible?) 
+            end
+        )
+
+        set_start_widget(box)
     end
 
-    def append_clock
-        append(Clock.new)
-    end
+    def append_bottom
+        box = Gtk::Box.new(:vertical, 10)
 
-    def append_power_buttons
-        append(Power.new.revealer)
+        box.append(Audio.new.revealer)
+        box.append(Clock.new)
+        box.append(Power.new.revealer)
+
+        set_end_widget(box)
     end
 end
