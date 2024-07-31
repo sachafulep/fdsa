@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'socket'
 
 SERVER_ADDRESS = 'localhost'
@@ -15,7 +17,7 @@ socket = nil
 begin
   socket = TCPSocket.new(SERVER_ADDRESS, PORT)
 rescue
-  Thread.new { system('ruby ~/Documents/fdsa/fdsa.rb') }
+  Thread.new { system('~/Documents/fdsa/fdsa.rb') }
 
   sleep(2000)
 

@@ -32,6 +32,7 @@ class Bar < Gtk::CenterBox
         box = Gtk::Box.new(:vertical, 10)
 
         box.append(Audio.new.revealer)
+        box.append(Battery.new) if DeviceService.laptop?
         box.append(Clock.new)
         box.append(Power.new.revealer)
 

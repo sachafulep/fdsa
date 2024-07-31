@@ -8,7 +8,7 @@ class Clock < Gtk::Box
         append(Gtk::Label.new(hour))
         append(Gtk::Label.new(minute))
 
-        GLib::Timeout.add(1000000) do
+        GLib::Timeout.add(60000) do
             update_time
             
             true
