@@ -43,3 +43,7 @@
     color: #cdd6f4;
     outline: none;
 }
+
+.window-bluetooth {
+    padding: 10px;
+}

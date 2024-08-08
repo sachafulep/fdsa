@@ -24,19 +24,6 @@ class Revealer < Gtk::Box
         end
     end
 
-    def revealer_buttons
-        box = Gtk::Box.new(:vertical, 10)
-
-        suspend = Button.new(icon: '', command: 'sudo systemctl suspend')
-        reboot = Button.new(icon: '', command: 'sudo systemctl reboot')
-
-        reboot.add_css_class('reboot-button')
-        reboot.add_css_class('first-revealer-item')
-
-        box.append(suspend)
-        box.append(reboot)
-    end
-
     def set_revealer_signals
         motion_controller = Gtk::EventControllerMotion.new
 

@@ -1,6 +1,6 @@
 class Button < Gtk::Box
-    def initialize(orientation: :vertical, spacing: 0, icon: '?', command: nil, &block)
-        super(orientation, spacing)
+    def initialize(orientation: :vertical, icon: '?', command: nil, &block)
+        super(orientation)
 
         @icon = icon
         @command = command

@@ -2,8 +2,7 @@
 
 Dir[File.join(__dir__, 'widgets/**/*.rb')].sort.each { |file| require file }
 Dir[File.join(__dir__, 'services/**/*.rb')].sort.each { |file| require file }
-
-require 'socket'
+Dir[File.join(__dir__, 'system/**/*.rb')].sort.each { |file| require file }
 
 require 'bundler/setup'
 require 'gtk4_layer_shell/preload'
@@ -19,92 +18,71 @@ $windows = {}
 
     create_bar
     create_launcher
+    # create_bluetooth
 
-    load_css
-
-    start_server
+    Css_loader.load
+    Tcp_server.start
 end
 
 def create_bar
-    @window_bar = Gtk::Window.new
+    window = Gtk::Window.new
 
-    @window_bar.set_transient_for(@window_main)
+    Gtk4LayerShell.init_for_window(window)
 
-    Gtk4LayerShell.init_for_window(@window_bar)
-    Gtk4LayerShell.auto_exclusive_zone_enable(@window_bar)
+    Gtk4LayerShell.auto_exclusive_zone_enable(window)
 
-    Gtk4LayerShell.set_margin(@window_bar, Gtk4LayerShell::Edge::TOP, 10)
-    Gtk4LayerShell.set_margin(@window_bar, Gtk4LayerShell::Edge::BOTTOM, 10)
-    Gtk4LayerShell.set_margin(@window_bar, Gtk4LayerShell::Edge::LEFT, 30)
+    Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::TOP, 10)
+    Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::BOTTOM, 10)
+    Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::LEFT, 30)
+    Gtk4LayerShell.set_anchor(window, Gtk4LayerShell::Edge::LEFT, 1)
 
-    Gtk4LayerShell.set_anchor(@window_bar, Gtk4LayerShell::Edge::LEFT, 1)
+    window.set_transient_for(@window_main)
+    window.set_default_size(0, DeviceService.laptop? ? 1007 : 1380)
+    window.set_child(Bar.new)
+    window.add_css_class('window-bar')
+    window.set_visible(true)
 
-    @window_bar.set_default_size(0, DeviceService.laptop? ? 1007 : 1380)
-    @window_bar.set_child(Bar.new)
-    @window_bar.set_visible(true)
-
-    $windows[:bar] = @window_bar
-
-    @window_bar.add_css_class('window-bar')
+    $windows[:bar] = window
 end
 
 def create_launcher
-    @window_launcher = Gtk::Window.new
+    window = Gtk::Window.new
 
-    Gtk4LayerShell.init_for_window(@window_launcher)
-    Gtk4LayerShell.set_anchor(@window_launcher, Gtk4LayerShell::Edge::TOP, 1)
-    Gtk4LayerShell.set_margin(@window_launcher, Gtk4LayerShell::Edge::TOP, DeviceService.laptop? ? 350 : 550)
-    Gtk4LayerShell.set_layer(@window_launcher, Gtk4LayerShell::Layer::TOP)
-    Gtk4LayerShell.set_keyboard_mode(@window_launcher, Gtk4LayerShell::KeyboardMode::EXCLUSIVE)
+    Gtk4LayerShell.init_for_window(window)
 
-    @launcher = Launcher.new(@window_launcher)
-    @entry = @launcher.entry
+    Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::TOP, DeviceService.laptop? ? 350 : 550)
+    Gtk4LayerShell.set_anchor(window, Gtk4LayerShell::Edge::TOP, 1)
+    Gtk4LayerShell.set_layer(window, Gtk4LayerShell::Layer::TOP)
+    Gtk4LayerShell.set_keyboard_mode(window, Gtk4LayerShell::KeyboardMode::EXCLUSIVE)
 
-    @window_launcher.set_transient_for(@window_main)
-    @window_launcher.set_child(@launcher)
-    @window_launcher.set_can_focus(true)
-    @window_launcher.add_css_class('window-launcher')
-    @window_launcher.set_visible(true)
-    @window_launcher.set_visible(false)
+    window.set_transient_for(@window_main)
+    window.set_child(Launcher.new(window))
+    window.add_css_class('window-launcher')
+    window.set_can_focus(true)
+    window.set_visible(true)
+    window.set_visible(false)
 
-    $windows[:launcher] = @window_launcher
+    $windows[:launcher] = window
 end
 
-def load_css
-    css_provider = Gtk::CssProvider.new
-    css_file_path = File.join(File.dirname(__FILE__), 'styles.css')
-    css_data = File.read(css_file_path)
-    display = Gdk::Display.default
+def create_bluetooth
+    window = Gtk::Window.new
 
-    css_provider.load(data: css_data)
+    Gtk4LayerShell.init_for_window(window)
 
-    Gtk::StyleContext.add_provider_for_display(
-        display,
-        css_provider,
-        Gtk::StyleProvider::PRIORITY_USER
-    )
-end    
+    Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::TOP, 350)
+    # Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::LEFT, 10)
+    Gtk4LayerShell.set_anchor(window, Gtk4LayerShell::Edge::TOP, 1)
+    # Gtk4LayerShell.set_anchor(window, Gtk4LayerShell::Edge::LEFT, 1)
 
-def start_server
-    server = TCPServer.new(12345)
+    window.set_default_size(300, 0)
+    window.set_transient_for(@window_main)
+    window.set_child(Bluetooth.new)
+    window.add_css_class('window-bluetooth')
+    window.set_visible(true)
+    # window.set_visible(false)
 
-    Thread.new do
-        loop do
-            client = server.accept
-
-            message = client.gets.chomp
-
-            if message == 'bar'
-                @window_bar.set_visible(!@window_bar.visible?)
-            elsif message == 'launcher'
-                @window_launcher.set_visible(!@window_launcher.visible?)
-
-                @entry.text = ''
-            end
-
-            client.close
-        end
-    end
+    $windows[:bluetooth] = window
 end
 
 @application.run
