@@ -31,7 +31,7 @@ class Tcp_server
         def window
             return unless $windows.keys.include?(@window_name)
 
-            @window ||= $windows[@window_name]
+            $windows[@window_name]
         end
     end
 end
