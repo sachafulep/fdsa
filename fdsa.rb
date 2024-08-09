@@ -18,7 +18,7 @@ $windows = {}
 
     create_bar
     create_launcher
-    # create_bluetooth
+    create_bluetooth
 
     Css_loader.load
     Tcp_server.start
