@@ -70,9 +70,11 @@ def create_bluetooth
 
     Gtk4LayerShell.init_for_window(window)
 
-    Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::TOP, 350)
+    # Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::TOP, 350)
     # Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::LEFT, 10)
+    Gtk4LayerShell.set_margin(window, Gtk4LayerShell::Edge::RIGHT, 20)
     Gtk4LayerShell.set_anchor(window, Gtk4LayerShell::Edge::TOP, 1)
+    Gtk4LayerShell.set_anchor(window, Gtk4LayerShell::Edge::RIGHT, 1)
     # Gtk4LayerShell.set_anchor(window, Gtk4LayerShell::Edge::LEFT, 1)
 
     window.set_default_size(300, 0)
