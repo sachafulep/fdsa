@@ -2,10 +2,13 @@ class Bluetooth < Gtk::Box
     def initialize
         super(:vertical)
 
+        @new_devices = {}
+        @new_devices_window = new_devices
+
         append(top_bar)
         append(connected_devices)
         append(middle_bar)
-        append(new_devices)
+        append(@new_devices_window)
     end
 
     private
@@ -58,19 +61,22 @@ class Bluetooth < Gtk::Box
         center_box.set_start_widget(Gtk::Label.new('Connect a device'))
 
         scan_button = Button.new(icon: '') do
-            devices = {}
+            @new_devices_window.set_child(scanning)
 
-            IO.popen('bluetoothctl --timeout 60 scan on') do |output|
-                output.each_line do |line|
-                    puts line
-                    # if line =~ /Device ([\w:]+) (.+)/
-                    #     mac_address = $1
-                    #     device_name = $2.strip
-                        
-                    #     devices[device_name] = mac_address
-                    # end
-                end
+            output = `bluetoothctl --timeout 5 scan on`
+
+            sanitized_output = output.lines.map {|line| line.gsub(/\033\[[0-9;]*m/, '') }
+
+            new_lines = sanitized_output.select {|line| line.start_with?('[NEW]') }
+
+            new_lines.each do |line|
+                mac_address = line.split[2]
+                name = line.split(mac_address)[1]
+
+                @new_devices[mac_address] = name
             end
+
+            puts @new_devices
         end
 
         center_box.set_end_widget(scan_button)
@@ -86,14 +92,32 @@ class Bluetooth < Gtk::Box
         window.set_min_content_height(130)
         window.add_css_class('bluetooth-devices')
         
-        box = Gtk::Box.new(:vertical)
-
-        box.set_valign(:center)
-
-        box.append(Gtk::Label.new('scan to find devices'))
-
-        window.set_child(box)
+        window.set_child(scan_to_find)
 
         window
+    end
+
+    def scan_to_find
+        @scan_to_find ||= begin
+            box = Gtk::Box.new(:vertical)
+
+            box.set_valign(:center)
+
+            box.append(Gtk::Label.new('scan to find devices'))
+
+            box
+        end
+    end
+    
+    def scanning
+        @scan_to_find ||= begin
+            box = Gtk::Box.new(:vertical)
+
+            box.set_valign(:center)
+
+            box.append(Gtk::Label.new('scanning'))
+
+            box
+        end
     end
 end
