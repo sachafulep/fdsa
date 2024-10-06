@@ -1,4 +1,4 @@
-class Bar < Gtk::CenterBox
+class BarWidget < Gtk::CenterBox
     def initialize
         super
 

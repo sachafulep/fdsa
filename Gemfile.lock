@@ -3,6 +3,7 @@ GEM
   specs:
     atk (4.2.2)
       glib2 (= 4.2.2)
+    awesome_print (1.9.2)
     cairo (1.17.13)
       native-package-installer (>= 1.0.3)
       pkg-config (>= 1.2.2)
@@ -44,16 +45,23 @@ GEM
     red-colors (0.4.0)
       json
       matrix
+    rexml (3.3.4)
+      strscan
+    ruby-dbus (0.23.1)
+      rexml
+    strscan (3.1.0)
 
 PLATFORMS
   ruby
   x86_64-linux
 
 DEPENDENCIES
+  awesome_print
   gtk4
   gtk4_layer_shell
   rake
   rb-inotify
+  ruby-dbus
 
 BUNDLED WITH
    2.5.11

@@ -3,7 +3,7 @@ require 'gtk4_layer_shell/preload'
 require 'gtk4_layer_shell'
 require 'gtk4'
 
-class Launcher < Gtk::Box
+class LauncherWidget < Gtk::Box
     def initialize(window)
         super(:horizontal)
 
