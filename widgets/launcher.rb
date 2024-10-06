@@ -50,9 +50,9 @@ class Launcher < Gtk::Box
     end
 
     def parse_command(command)
-        case command 
+        case command
         when 'spotify'
-            'spotify-launcher'
+            'spotify-launcher --skip-update'
         else
             command
         end

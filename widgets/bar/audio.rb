@@ -39,20 +39,19 @@ class Audio < Gtk::Box
     def revealer_buttons
         box = Gtk::Box.new(:vertical, 10)
         script = '~/Documents/scripts/audio/change_sink.sh'
+        button = nil
 
         {
-            '': "#{script} WH-1000XM4",
-            '': "#{script} DragonFly Red Analog Stereo",
-            '': "#{script} Schiit Modi 3 Analog Stereo"
+            '': "#{script} #{DeviceService.bluetooth_device_name}",
+            '': "#{script} #{DeviceService.speaker_device_name}",
+            '': "#{script} #{DeviceService.headphone_device_name}"
         }.each do |icon, command|
             button = Button.new(icon: icon, command: command)
 
-            if command == "#{script} Schiit Modi 3 Analog Stereo"
-                button.add_css_class('first-revealer-item')
-            end
-
             box.append(button)
         end
+
+        button.add_css_class('first-revealer-item')
 
         box
     end
