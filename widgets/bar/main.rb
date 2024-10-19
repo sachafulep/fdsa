@@ -36,7 +36,7 @@ module Widgets
         box.append(Audio.new.revealer)
         box.append(Battery.new) if Services::DeviceService.laptop?
         box.append(Clock.new)
-        box.append(Power.new.revealer)
+        box.append(Power.new)
 
         set_end_widget(box)
       end

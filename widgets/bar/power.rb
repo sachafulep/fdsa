@@ -1,16 +1,17 @@
 module Widgets
   module Bar
-    class Power
-      def revealer
-        trigger = Widgets::Generic::Button.new(icon: '', command: 'sudo systemctl poweroff')
-        child = revealer_buttons
-
-        Revealer.new(trigger: trigger, child: child)
+    class Power < Revealer
+      def initialize
+        super(trigger: trigger, child: child)
       end
 
       private
 
-      def revealer_buttons
+      def trigger
+        Widgets::Generic::Button.new(icon: '', command: 'sudo systemctl poweroff')
+      end
+
+      def child
         box = Gtk::Box.new(:vertical, 10)
 
         suspend = Widgets::Generic::Button.new(icon: '', command: 'sudo systemctl suspend')
