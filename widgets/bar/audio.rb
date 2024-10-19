@@ -26,7 +26,7 @@ class Audio < Gtk::Box
 
         box.add_css_class('item')
 
-        volume = File.readlines(FILE_PATH).first
+        volume = `~/Documents/scripts/audio/get_volume.sh`
 
         @volume_label = Gtk::Label.new(volume.gsub(/\n/, ''))
 
