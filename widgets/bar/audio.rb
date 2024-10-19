@@ -1,10 +1,5 @@
 require 'rb-inotify'
 
-require 'bundler/setup'
-require 'gtk4_layer_shell/preload'
-require 'gtk4_layer_shell'
-require 'gtk4'
-
 module Widgets
   module Bar
     class Audio < Gtk::Box
