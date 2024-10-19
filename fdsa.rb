@@ -24,7 +24,6 @@ $window_main
 
     Bar.new
     Launcher.new
-    # Bluetooth.new
 
     Css_loader.load
     Tcp_server.start
