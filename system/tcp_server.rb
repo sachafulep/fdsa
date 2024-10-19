@@ -1,37 +1,39 @@
 require 'socket'
 
-class Tcp_server
-    class << self
-        def start
-            server = TCPServer.new(12345)
+module System
+    class Tcp_server
+        class << self
+            def start
+                server = TCPServer.new(12345)
 
-            Thread.new do
-                loop do
-                    client = server.accept
+                Thread.new do
+                    loop do
+                        client = server.accept
 
-                    @window_name = client.gets.chomp.to_sym
+                        @window_name = client.gets.chomp.to_sym
 
-                    client.close; next if window.nil?
-        
-                    toggle_window
-        
-                    client.close
+                        client.close; next if window.nil?
+            
+                        toggle_window
+            
+                        client.close
+                    end
                 end
             end
-        end
 
-        private
+            private
 
-        def toggle_window
-            window.set_visible(!window.visible?)
+            def toggle_window
+                window.set_visible(!window.visible?)
 
-            window.child.entry.text = '' if @window_name == :launcher
-        end
+                window.child.entry.text = '' if @window_name == :launcher
+            end
 
-        def window
-            return unless $windows.keys.include?(@window_name)
+            def window
+                return unless $windows.keys.include?(@window_name)
 
-            $windows[@window_name]
+                $windows[@window_name]
+            end
         end
     end
 end
