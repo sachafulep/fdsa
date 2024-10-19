@@ -20,13 +20,13 @@ $window_main
 @application = Gtk::Application.new('org.gtk.fdsa', :flags_none)
 
 @application.signal_connect 'activate' do |app|
-    $window_main = Gtk::ApplicationWindow.new(@application)
+  $window_main = Gtk::ApplicationWindow.new(@application)
 
-    Windows::Bar.new
-    Windows::Launcher.new
+  Windows::Bar.new
+  Windows::Launcher.new
 
-    System::Css_loader.load
-    System::Tcp_server.start
+  System::Css_loader.load
+  System::Tcp_server.start
 end
 
 @application.run
