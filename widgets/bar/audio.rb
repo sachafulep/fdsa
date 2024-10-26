@@ -6,6 +6,8 @@ module Widgets
       FILE_PATH = '/tmp/volume_level'
 
       def initialize
+        File.open(FILE_PATH, 'w').close unless File.exist?(FILE_PATH)  
+
         start_notifier
       end
 
@@ -13,7 +15,7 @@ module Widgets
         trigger = revealer_trigger
         child = revealer_buttons
 
-        Revealer.new(trigger: trigger, child: child)
+        Widgets::Generic::Revealer.new(trigger: trigger, child: child)
       end
 
       private
@@ -58,11 +60,7 @@ module Widgets
       end
 
       def icon
-        label = Gtk::Label.new('')
-    
-        label.add_css_class('item__icon')
-    
-        label
+        Gtk::Label.new('')
       end
 
       def start_notifier

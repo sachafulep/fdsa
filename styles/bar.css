@@ -1,0 +1,14 @@
+.bar {
+    padding: 10px;
+}
+
+.item {
+    border-radius: 5px;
+    background-color: #b4befe;
+    color: #181825;
+    padding: 10px 0;
+}
+
+.item > :first-child:not(:last-child) {
+    margin-bottom: 10px;
+}

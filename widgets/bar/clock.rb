@@ -25,11 +25,7 @@ module Widgets
       end
 
       def icon
-      label = Gtk::Label.new('')
-
-      label.add_css_class('item__icon')
-
-      label
+        Gtk::Label.new('')
       end
 
       def hour

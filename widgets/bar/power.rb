@@ -1,6 +1,6 @@
 module Widgets
   module Bar
-    class Power < Revealer
+    class Power < Widgets::Generic::Revealer
       def initialize
         super(trigger: trigger, child: child)
       end

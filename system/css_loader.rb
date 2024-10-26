@@ -11,12 +11,34 @@ module System
         )
       end
 
-      def project_root
-        File.dirname(File.expand_path($0))
+      def css_data
+        css_files.reduce('') { |data, file| data << File.read(file) }
       end
 
-      def css_data
-        File.read(File.join(project_root, 'styles.css'))
+      def css_files
+        [main_css_file, other_css_files].flatten
+      end
+
+      def main_css_file
+        File.join(project_root, 'styles.css')
+      end
+
+      def other_css_files
+        other_css_file_names.map {|file| File.join(styles_folder, file) }
+      end
+
+      def other_css_file_names
+        Dir.entries(styles_folder).select do |file|
+          File.file?(File.join(styles_folder, file))
+        end
+      end
+
+      def styles_folder
+        "#{project_root}/styles"
+      end
+
+      def project_root
+        File.dirname(File.expand_path($0))
       end
 
       def css_provider

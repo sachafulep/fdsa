@@ -24,11 +24,7 @@ module Widgets
       end
 
       def icon_label
-        label = Gtk::Label.new(icon)
-
-        label.add_css_class('item__icon')
-
-        label
+        Gtk::Label.new(icon)
       end
       
       def icon
