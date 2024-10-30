@@ -16,3 +16,7 @@
     color: #cdd6f4;
     outline: none;
 }
+
+block-cursor {
+    background-color: rgba(0, 0, 0, 0);
+}

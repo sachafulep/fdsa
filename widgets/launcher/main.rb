@@ -1,8 +1,3 @@
-require 'bundler/setup'
-require 'gtk4_layer_shell/preload'
-require 'gtk4_layer_shell'
-require 'gtk4'
-
 module Widgets
   module Launcher
     class Main < Gtk::Box
@@ -14,6 +9,8 @@ module Widgets
         add_css_class('launcher')
 
         connect_signals
+
+        enable_autocomplete
 
         append(label)
         append(entry)
@@ -31,6 +28,7 @@ module Widgets
           instance.set_focusable(true)
           instance.set_sensitive(true)
           instance.set_has_frame(false)
+          instance.set_overwrite_mode(true)
           instance.add_css_class('launcher__entry')
 
           instance
@@ -38,6 +36,51 @@ module Widgets
       end
 
       private
+
+      def enable_autocomplete
+        @handler = entry.signal_connect('changed') do
+          @current_text = entry.text
+
+          if entry.position == 0
+            update_text('')
+
+            next
+          end
+
+          next if @current_text == '' || autocomplete_terms.include?(@current_text)
+
+          suggestions = autocomplete_suggestions
+        
+          if suggestions.any?
+            update_text(suggestions.first)
+          elsif @current_text.length > entry.position
+            update_text(@current_text[0..(entry.position - 1)])
+
+            @current_text = entry.text
+
+            suggestions = autocomplete_suggestions
+
+            update_text(suggestions.first) if suggestions.any?
+          end
+        
+          false
+        end
+      end
+
+      def autocomplete_terms
+        terms = ['firefox', 'code', 'spotify', 'heroic', 'steam']
+      end
+
+      def autocomplete_suggestions
+        autocomplete_terms.select { |term| term.start_with?(entry.text) }
+      end
+
+      def update_text(text)
+        entry.signal_handler_block(@handler)
+        entry.text = text
+        entry.signal_handler_unblock(@handler)
+        entry.position = @current_text.length
+      end
 
       def connect_signals
         entry.signal_connect('activate') do
