@@ -95,6 +95,8 @@ module Widgets
       end
 
       def parse_command(command)
+        return command
+
         case command
         when 'spotify'
           'spotify-launcher --skip-update'
