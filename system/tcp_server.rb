@@ -10,13 +10,20 @@ module System
           loop do
             client = server.accept
 
-            @window_name = client.gets.chomp.to_sym
+            params = client.gets.chomp.split
+
+            @window_name = params.first.to_sym
+            @state = params.last if params.length > 1
+
+            @state = @state == "true" if @state
 
             client.close; next if window.nil?
       
             toggle_window
       
             client.close
+
+            @state = nil
           end
         end
       end
@@ -24,7 +31,11 @@ module System
       private
 
       def toggle_window
-        window.set_visible(!window.visible?)
+        if @state.nil?
+          window.set_visible(!window.visible?)
+        else
+          window.set_visible(@state)
+        end
 
         window.child.entry.text = '' if @window_name == :launcher
       end
