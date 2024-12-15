@@ -12,7 +12,7 @@ module Windows
       set_transient_for($window_main)
       set_child(Widgets::Network::Main.new)
       add_css_class('window-network')
-      set_visible(true)
+      set_visible(false)
 
       $windows[:network] = self
     end
