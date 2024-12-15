@@ -31,11 +31,13 @@ module System
       private
 
       def toggle_window
-        if @state.nil?
-          window.set_visible(!window.visible?)
-        else
-          window.set_visible(@state)
-        end
+        @state = !window.visible? if @state.nil?
+
+        window.set_visible(@state)
+
+        hide_children
+
+        start_background_tasks
 
         window.child.entry.text = '' if @window_name == :launcher
       end
@@ -44,6 +46,13 @@ module System
         return unless $windows.keys.include?(@window_name)
 
         $windows[@window_name]
+      end
+
+      def hide_children
+        return if @state == true
+        return if @window_name != :bar
+
+        $windows[:network].set_visible(false) 
       end
     end
   end

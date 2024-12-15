@@ -6,6 +6,8 @@ module Widgets
           window = $windows[:network]
 
           window.set_visible(!window.visible?)
+
+          window.child.start_connection_monitor if window.visible?
         end
       end
     end

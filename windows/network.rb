@@ -9,10 +9,12 @@ module Windows
       Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::LEFT, 1)
       Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::BOTTOM, 1)
 
+      @widget_main = Widgets::Network::Main.new
+
       set_transient_for($window_main)
-      set_child(Widgets::Network::Main.new)
+      set_child(@widget_main)
       add_css_class('window-network')
-      set_visible(false)
+      set_visible(true)
 
       $windows[:network] = self
     end

@@ -2,13 +2,27 @@ module Widgets
   module Network
     class Ethernet < Widgets::Network::Network
       def initialize
-        super('Ethernet', :ethernet, data['state'])
+        super('Ethernet', :ethernet, connected)
+      end
+
+      def start_connection_monitor
+        @thread = Thread.new do
+          while $windows[:network].visible?
+            set_connected(connected)
+
+            sleep 2
+          end
+        end
       end
 
       private
 
+      def connected
+        data['state'] == 'routable (configured)'
+      end
+
       def data
-        @data ||= parse_data
+        parse_data
       end
 
       def parse_data

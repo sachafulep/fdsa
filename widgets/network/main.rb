@@ -13,6 +13,10 @@ module Widgets
         # information automatically. when closed stop the thread.
       end
 
+      def start_connection_monitor
+        ethernet.start_connection_monitor
+      end
+
       private
 
       def top_bar
@@ -26,7 +30,11 @@ module Widgets
       end
 
       def networks
-        Widgets::Network::Ethernet.new
+        ethernet
+      end
+
+      def ethernet
+        @ethernet ||= Widgets::Network::Ethernet.new
       end
     end
   end
