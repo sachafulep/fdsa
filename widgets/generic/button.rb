@@ -4,7 +4,7 @@ module Widgets
       def initialize(orientation: :vertical, icon: '?', command: nil, &block)
         super(orientation)
 
-        @icon = icon
+        @icon = Gtk::Label.new(icon)
         @command = command
         @block = block
 
@@ -14,18 +14,20 @@ module Widgets
         set_size_request(40, 40)
         set_cursor(Gdk::Cursor.new('pointer'))
 
-        set_icon
+        setup_icon
         set_click_action
+      end
+
+      def set_icon(icon)
+        @icon.set_text(icon)
       end
 
       private
 
-      def set_icon
-        label = Gtk::Label.new(@icon)
+      def setup_icon
+        @icon.set_vexpand(true)
 
-        label.set_vexpand(true)
-
-        append(label)
+        append(@icon)
       end
 
       def set_click_action

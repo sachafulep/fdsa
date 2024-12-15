@@ -1,0 +1,21 @@
+.network {
+  padding: 20px;
+  min-width: 200px;
+}
+
+.network__top-bar {
+  margin-bottom: 20px;
+}
+
+.network__top-bar-download {
+  border: 1px solid #b4befe;
+  border-radius: 5px;
+  padding: 0px 10px;
+}
+
+.network__network {
+  padding: 10px;
+  border-radius: 5px;
+  color: #181825;
+  background-color: #b4befe;
+}

@@ -1,7 +1,7 @@
 module Widgets
   module Generic
     class Revealer < Gtk::Box
-      def initialize(trigger: [], child: nil)
+      def initialize(trigger: nil, child: nil)
         super(:vertical, 0)
 
         @child = child
