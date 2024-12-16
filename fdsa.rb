@@ -25,6 +25,7 @@ $window_main
   Windows::Bar.new
   Windows::Launcher.new
   Windows::Network.new
+  Windows::Bluetooth.new
 
   System::Css_loader.load
   System::Tcp_server.start

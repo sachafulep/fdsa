@@ -5,6 +5,7 @@ module Widgets
         orientation: :vertical,
         icon: '?',
         small: false,
+        reverse: false,
         command: nil,
         &block
       )
@@ -17,6 +18,7 @@ module Widgets
 
         add_css_class('item')
         add_css_class('item--small') if small
+        add_css_class('item--reverse') if reverse
 
         set_vexpand(false)
         set_size_request(size, size)

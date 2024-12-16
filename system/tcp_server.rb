@@ -51,6 +51,7 @@ module System
         return if @window_name != :bar
 
         $windows[:network].set_visible(false) 
+        $windows[:bluetooth].set_visible(false) 
       end
     end
   end

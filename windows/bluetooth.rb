@@ -1,0 +1,22 @@
+module Windows
+  class Bluetooth < Gtk::Window
+    def initialize
+      super
+
+      Gtk4LayerShell.init_for_window(self)
+      Gtk4LayerShell.set_margin(self, Gtk4LayerShell::Edge::LEFT, 15)
+      Gtk4LayerShell.set_margin(self, Gtk4LayerShell::Edge::BOTTOM, 210)
+      Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::LEFT, 1)
+      Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::BOTTOM, 1)
+
+      @widget_main = Widgets::Bluetooth::Main.new
+
+      set_transient_for($window_main)
+      set_child(@widget_main)
+      add_css_class('window-bluetooth')
+      set_visible(true)
+
+      $windows[:bluetooth] = self
+    end
+  end
+end
