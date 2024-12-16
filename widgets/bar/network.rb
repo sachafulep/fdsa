@@ -5,8 +5,10 @@ module Widgets
         super(icon: '') do
           window = $windows[:network]
 
-          window.set_visible(!window.visible?)
+          $windows[:bluetooth].set_visible(false)
 
+          window.set_visible(!window.visible?)
+          
           window.child.start_connection_monitor if window.visible?
         end
       end
