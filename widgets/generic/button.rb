@@ -1,17 +1,25 @@
 module Widgets
   module Generic
     class Button < Gtk::Box
-      def initialize(orientation: :vertical, icon: '?', command: nil, &block)
+      def initialize(
+        orientation: :vertical,
+        icon: '?',
+        small: false,
+        command: nil,
+        &block
+      )
         super(orientation)
 
         @icon = Gtk::Label.new(icon)
+        @small = small
         @command = command
         @block = block
 
         add_css_class('item')
+        add_css_class('item--small') if small
 
         set_vexpand(false)
-        set_size_request(40, 40)
+        set_size_request(size, size)
         set_cursor(Gdk::Cursor.new('pointer'))
 
         setup_icon
@@ -40,6 +48,10 @@ module Widgets
         end
       
         add_controller(click_gesture)
+      end
+      
+      def size
+        @small ? 25 : 40
       end
     end
   end

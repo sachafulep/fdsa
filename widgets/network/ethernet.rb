@@ -2,7 +2,7 @@ module Widgets
   module Network
     class Ethernet < Widgets::Network::Network
       def initialize
-        super('Ethernet', :ethernet, connected)
+        super('Ethernet', :ethernet, connected, true)
       end
 
       def start_connection_monitor

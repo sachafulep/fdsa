@@ -8,13 +8,10 @@ module Widgets
 
         append(top_bar)
         append(networks)
-
-        # when opened start running a loop in a thread which updates networking 
-        # information automatically. when closed stop the thread.
       end
 
       def start_connection_monitor
-        ethernet.start_connection_monitor
+        networks.start_connection_monitor
       end
 
       private
@@ -30,7 +27,11 @@ module Widgets
       end
 
       def networks
-        ethernet
+        Services::DeviceService.laptop? ? wlan : ethernet
+      end
+
+      def wlan
+        @wlan ||= Widgets::Network::Wlan.new
       end
 
       def ethernet

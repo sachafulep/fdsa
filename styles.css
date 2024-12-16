@@ -1,7 +1,7 @@
-.window-bar, .window-launcher {
+.window-bar, .window-launcher, .window-network {
     background-color: #313244;
 }
 
-.window-launcher {
+.window-launcher, .window-network {
     color: #cdd6f4;
 }

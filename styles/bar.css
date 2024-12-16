@@ -10,6 +10,10 @@
     min-height: 20px;
 }
 
+.item--small {
+    padding: 0;
+}
+
 .item > :first-child:not(:last-child) {
     margin-bottom: 10px;
 }

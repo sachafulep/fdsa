@@ -37,8 +37,6 @@ module System
 
         hide_children
 
-        start_background_tasks
-
         window.child.entry.text = '' if @window_name == :launcher
       end
 
