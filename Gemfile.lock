@@ -42,6 +42,7 @@ GEM
       gdk4 (= 4.2.4)
     gtk4_layer_shell (1.0.0)
     json (2.7.2)
+    logger (1.6.4)
     matrix (0.4.2)
     native-package-installer (1.1.9)
     pango (4.2.4)
@@ -73,6 +74,7 @@ DEPENDENCIES
   awesome_print
   gtk4
   gtk4_layer_shell
+  logger
   rake
   rb-inotify
   zeitwerk

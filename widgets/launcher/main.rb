@@ -68,7 +68,14 @@ module Widgets
       end
 
       def autocomplete_terms
-        terms = ['firefox', 'code', 'spotify', 'heroic', 'steam']
+        terms = [
+          'firefox',
+          'code',
+          'spotify',
+          'heroic',
+          'steam',
+          'android-studio'
+        ]
       end
 
       def autocomplete_suggestions

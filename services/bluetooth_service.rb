@@ -11,8 +11,24 @@ module Services
         parse_devices(`bluetoothctl devices Paired`, false, true)
       end
 
+      def connect_device(device)
+        `bluetoothctl connect #{device.mac_address}`
+      end
+
       def disconnect_device(device)
         `bluetoothctl disconnect #{device.mac_address}`
+      end
+
+      def listen_to_events(callback)
+        Thread.new do
+          IO.popen('bluetoothctl') do |bluetooth|
+            bluetooth.each_line do |line|
+              if line =~ /Device\s([0-9A-F]{2}:){5}[0-9A-F]{2}\sConnected:\s(yes|no)/
+                callback.call
+              end
+            end
+          end
+        end
       end
 
       private

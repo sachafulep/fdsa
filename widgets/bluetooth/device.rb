@@ -7,8 +7,6 @@ module Widgets
         @device = device
         @status = Gtk::Label.new('')
 
-        # set_connected(connected)
-
         add_css_class('bluetooth__device')
         add_css_class('bluetooth__device--paired') if device.paired && !device.connected
 
@@ -18,23 +16,19 @@ module Widgets
         set_end_widget(end_widget)
       end
 
-      # def set_connected(value)
-      #   @connected = value
-
-      #   @status.set_text(icon)
-      # end
-
       private
 
       def end_widget
         Widgets::Generic::Button.new(
           icon: icon,
           small: true,
-          reverse: @device.connected
+          inverse_colors: @device.connected
         ) do
-          result = Services::BluetoothService.disconnect_device(@device)
-
-          
+          if @device.connected
+            Services::BluetoothService.disconnect_device(@device)
+          else
+            Services::BluetoothService.connect_device(@device)
+          end
         end
       end
 
