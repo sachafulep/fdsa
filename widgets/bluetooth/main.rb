@@ -6,19 +6,17 @@ module Widgets
 
         add_css_class('bluetooth')
 
-        @scan_results = {}
-        @boxes = {
-          connected: Gtk::Box.new(:vertical, 10),
-          paired: Gtk::Box.new(:vertical, 10),
-          more: Gtk::Box.new(:vertical, 10),
-        }
+        @top_bar = TopBar.new
+        @connected_widget = Devices.new(:connected)
+        @paired_widget = Devices.new(:paired)
+        @more_widget = MoreDevices.new
 
-        append(TopBar.new)
-        append(Devices.new(@boxes, :connected, @scan_results))
-        append(Devices.new(@boxes, :paired, @scan_results))
-        append(Devices.new(@boxes, :more, @scan_results))
+        append(@top_bar)
+        append(@connected_widget)
+        append(@paired_widget)
+        append(@more_widget)
 
-        Services::BluetoothService.listen_to_events(callbacks)
+        Services::BluetoothService.start_event_listener(callbacks)
       end
 
       private
@@ -26,28 +24,16 @@ module Widgets
       def callbacks
         {
           connected: method(:redraw),
-          new: method(:append_scan_result)
+          new: @more_widget.method(:append_scan_result),
+          del: method(:redraw),
+          paired: @more_widget.method(:clear_scan_results),
+          power: @top_bar.method(:update_power_indicator)
         }
       end
 
       def redraw
-        ['connected', 'paired'].each do |state|
-          @boxes[state].each do |box|
-            box.children.each {|child| box.remove(child) }
-          end
-
-         append_devices(state)
-        end
-
-        queue_draw
-      end
-
-      def append_scan_result(device)
-        return if @scan_results.key?(device.mac_address)
-
-        @scan_results[device.mac_address] = device
-
-        @boxes[:more].append(Widgets::Bluetooth::Device.new(device))
+        @connected_widget.append_devices
+        @paired_widget.append_devices
 
         queue_draw
       end

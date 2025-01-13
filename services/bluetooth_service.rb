@@ -45,7 +45,13 @@ module Services
         `bluetoothctl power on`
       end
 
-      def listen_to_events(callbacks)
+      def scan
+        Thread.new do
+          `bluetoothctl --timeout 60 scan on`
+        end
+      end
+
+      def start_event_listener(callbacks)
         Thread.new do
           IO.popen('bluetoothctl') do |bluetooth|
             bluetooth.each_line do |line|
@@ -60,11 +66,22 @@ module Services
                 name = $2
 
                 callbacks[:new].call(Device.new(name, mac_address, false, false))
+              elsif line =~ /\[DEL\]/
+                callbacks[:del].call
+              elsif line =~ /Paired:/
+                ap line
+                callbacks[:paired].call
+              elsif line =~ /Powered:\s(yes|no)/
+                state = line.include?('yes') ? :on : :off
+
+                callbacks[:power].call(state)
               end
             end
           end
         end
       end
+
+      private
 
       def unwanted_line?(line)
         [
@@ -77,14 +94,6 @@ module Services
           line.include?(substring)
         end
       end
-      
-      def scan
-        Thread.new do
-          `bluetoothctl --timeout 60 scan on`
-        end
-      end
-
-      private
 
       def parse_devices(result, connected, paired)
         result.split(/\n/).map do |device|

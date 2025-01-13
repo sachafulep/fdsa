@@ -1,25 +1,24 @@
 module Widgets
   module Bluetooth
     class Devices < Gtk::Box
-      def initialize(boxes, state, scan_results)
+      def initialize(state)
         super(:vertical, 10)
 
         @state = state
-        @boxes = boxes
-        @scan_results = scan_results
-        @device_box = boxes[state]
+        @device_box = Gtk::Box.new(:vertical, 10)
 
-        top_bar = Gtk::CenterBox.new
-        top_bar.set_start_widget(Gtk::Label.new(@state.capitalize))
-        top_bar.set_end_widget(scan_button) if @state == :more
+        @top_bar = Gtk::CenterBox.new
+        @top_bar.set_start_widget(Gtk::Label.new(@state.capitalize))
 
-        append(top_bar)
+        append(@top_bar)
         append(@device_box)
 
         append_devices
       end
 
       def append_devices
+        clear_children
+
         devices = devices(@state)
 
         if devices.length == 0
@@ -37,16 +36,8 @@ module Widgets
         end
       end
 
-      def scan_button
-        Widgets::Generic::Button.new(icon: '', small: true) do
-          @boxes[:more].children.each do |child|
-            @boxes[:more].remove(child)
-          end
-
-          @scan_results.clear
-
-          Services::BluetoothService.scan
-        end
+      def clear_children
+        @device_box.children.each {|child| @device_box.remove(child) }
       end
     end
   end
