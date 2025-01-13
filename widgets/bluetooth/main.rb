@@ -6,101 +6,50 @@ module Widgets
 
         add_css_class('bluetooth')
 
-        @connected_devices_box = Gtk::Box.new(:vertical, 10)
-        @paired_devices_box = Gtk::Box.new(:vertical, 10)
-        @more_devices_box = Gtk::Box.new(:vertical, 10)
+        @scan_results = {}
+        @boxes = {
+          connected: Gtk::Box.new(:vertical, 10),
+          paired: Gtk::Box.new(:vertical, 10),
+          more: Gtk::Box.new(:vertical, 10),
+        }
 
-        append(connected_devices)
-        append(paired_devices)
-        append(more_devices)
+        append(TopBar.new)
+        append(Devices.new(@boxes, :connected, @scan_results))
+        append(Devices.new(@boxes, :paired, @scan_results))
+        append(Devices.new(@boxes, :more, @scan_results))
 
-        Services::BluetoothService.listen_to_events(method(:redraw))
+        Services::BluetoothService.listen_to_events(callbacks)
       end
 
       private
 
+      def callbacks
+        {
+          connected: method(:redraw),
+          new: method(:append_scan_result)
+        }
+      end
+
       def redraw
-        @connected_devices_box.children.each do |child|
-          @connected_devices_box.remove(child)
-        end
+        ['connected', 'paired'].each do |state|
+          @boxes[state].each do |box|
+            box.children.each {|child| box.remove(child) }
+          end
 
-        @paired_devices_box.children.each do |child|
-          @paired_devices_box.remove(child)
+         append_devices(state)
         end
-
-        append_connected_devices
-        append_paired_devices
 
         queue_draw
       end
 
-      def connected_devices
-        box = Gtk::Box.new(:vertical, 10)
+      def append_scan_result(device)
+        return if @scan_results.key?(device.mac_address)
 
-        top_bar = Gtk::CenterBox.new
-        top_bar.set_start_widget(Gtk::Label.new('Connected'))
+        @scan_results[device.mac_address] = device
 
-        box.append(top_bar)
+        @boxes[:more].append(Widgets::Bluetooth::Device.new(device))
 
-        append_connected_devices
-
-        box.append(@connected_devices_box)
-
-        box
-      end
-
-      def append_connected_devices
-        Services::BluetoothService.connected_devices.each do |device|
-          @connected_devices_box.append(Widgets::Bluetooth::Device.new(device))
-        end
-
-        if Services::BluetoothService.connected_devices.length == 0
-          @connected_devices_box.append(Gtk::Label.new('...'))
-        end
-      end
-
-      def paired_devices
-        box = Gtk::Box.new(:vertical, 10)
-
-        top_bar = Gtk::CenterBox.new
-        top_bar.set_start_widget(Gtk::Label.new('Paired'))
-
-        box.append(top_bar)
-
-        append_paired_devices
-
-        box.append(@paired_devices_box)
-
-        box
-      end
-
-      def append_paired_devices
-        devices = Services::BluetoothService.paired_devices
-        connected_device_mac_addresses =
-          Services::BluetoothService.connected_devices.map(&:mac_address)
-
-        devices = devices.reject do |device|
-            connected_device_mac_addresses.include?(device.mac_address)
-        end
-
-        devices.each do |device|
-          @paired_devices_box.append(Widgets::Bluetooth::Device.new(device))
-        end
-      end
-
-      def more_devices
-        box = Gtk::Box.new(:vertical, 10)
-
-        top_bar = Gtk::CenterBox.new
-        top_bar.set_start_widget(Gtk::Label.new('More'))
-        top_bar.set_end_widget(
-          Widgets::Generic::Button.new(icon: '', small: true)
-        )
-
-        box.append(top_bar)
-        box.append(Gtk::Label.new('...'))
-        
-        box
+        queue_draw
       end
     end
   end

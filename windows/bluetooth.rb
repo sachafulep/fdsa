@@ -5,7 +5,7 @@ module Windows
 
       Gtk4LayerShell.init_for_window(self)
       Gtk4LayerShell.set_margin(self, Gtk4LayerShell::Edge::LEFT, 15)
-      Gtk4LayerShell.set_margin(self, Gtk4LayerShell::Edge::BOTTOM, 210)
+      Gtk4LayerShell.set_margin(self, Gtk4LayerShell::Edge::BOTTOM, 160)
       Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::LEFT, 1)
       Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::BOTTOM, 1)
 
@@ -14,7 +14,7 @@ module Windows
       set_transient_for($window_main)
       set_child(@widget_main)
       add_css_class('window-bluetooth')
-      set_visible(false)
+      set_visible(true)
 
       $windows[:bluetooth] = self
     end

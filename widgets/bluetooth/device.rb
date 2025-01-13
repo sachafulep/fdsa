@@ -8,7 +8,7 @@ module Widgets
         @status = Gtk::Label.new('')
 
         add_css_class('bluetooth__device')
-        add_css_class('bluetooth__device--paired') if device.paired && !device.connected
+        add_css_class('bluetooth__device--connected') if device.connected
 
         set_hexpand(true)
 
@@ -19,15 +19,28 @@ module Widgets
       private
 
       def end_widget
+        box = Gtk::Box.new(:horizontal, 10)
+        
+        box.append(action_button)
+        box.append(remove_button) if @device.paired
+
+        box
+      end
+
+      def action_button
         Widgets::Generic::Button.new(
           icon: icon,
           small: true,
           inverse_colors: @device.connected
         ) do
-          if @device.connected
-            Services::BluetoothService.disconnect_device(@device)
+          if @device.paired
+            if @device.connected
+              Services::BluetoothService.disconnect_device(@device)
+            else
+              Services::BluetoothService.connect_device(@device)
+            end
           else
-            Services::BluetoothService.connect_device(@device)
+            Services::BluetoothService.pair_device(@device)
           end
         end
       end
@@ -37,6 +50,16 @@ module Widgets
         return '' if @device.paired
 
         ''
+      end
+
+      def remove_button
+        Widgets::Generic::Button.new(
+          icon: '',
+          small: true,
+          inverse_colors: @device.connected
+        ) do
+          Services::BluetoothService.remove_device(@device)
+        end
       end
     end
   end
