@@ -2,68 +2,40 @@ module Widgets
   module Bluetooth
     class Main < Gtk::Box
       def initialize
-        super(:vertical, 10)
+        super(:vertical, 30)
 
         add_css_class('bluetooth')
 
-        append(connected_devices)
-        append(paired_devices)
-        append(more_devices)
+        @top_bar = TopBar.new
+        @connected_widget = Devices.new(:connected)
+        @paired_widget = Devices.new(:paired)
+        @more_widget = MoreDevices.new
+
+        append(@top_bar)
+        append(@connected_widget)
+        append(@paired_widget)
+        append(@more_widget)
+
+        Services::BluetoothService.start_event_listener(callbacks)
       end
 
       private
 
-      def connected_devices
-        box = Gtk::Box.new(:vertical, 10)
-
-        top_bar = Gtk::CenterBox.new
-        top_bar.set_start_widget(Gtk::Label.new('Connected'))
-
-        box.append(top_bar)
-
-        Services::BluetoothService.connected_devices.each do |device|
-          box.append(Widgets::Bluetooth::Device.new(device))
-        end
-
-        box
+      def callbacks
+        {
+          connected: method(:redraw),
+          new: @more_widget.method(:append_scan_result),
+          del: method(:redraw),
+          paired: @more_widget.method(:clear_scan_results),
+          power: @top_bar.method(:update_power_indicator)
+        }
       end
 
-      def paired_devices
-        box = Gtk::Box.new(:vertical, 10)
+      def redraw
+        @connected_widget.append_devices
+        @paired_widget.append_devices
 
-        top_bar = Gtk::CenterBox.new
-        top_bar.set_start_widget(Gtk::Label.new('Paired'))
-
-        box.append(top_bar)
-
-        devices = Services::BluetoothService.paired_devices
-        connected_device_mac_addresses =
-          Services::BluetoothService.connected_devices.map(&:mac_address)
-
-        devices = devices.reject do |device|
-            connected_device_mac_addresses.include?(device.mac_address)
-        end
-
-        devices.each do |device|
-          box.append(Widgets::Bluetooth::Device.new(device))
-        end
-
-        box
-      end
-
-      def more_devices
-        box = Gtk::Box.new(:vertical, 10)
-
-        top_bar = Gtk::CenterBox.new
-        top_bar.set_start_widget(Gtk::Label.new('More'))
-        top_bar.set_end_widget(
-          Widgets::Generic::Button.new(icon: '', small: true)
-        )
-
-        box.append(top_bar)
-        box.append(Gtk::Label.new('...'))
-        
-        box
+        queue_draw
       end
     end
   end

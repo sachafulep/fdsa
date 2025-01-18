@@ -44,7 +44,7 @@ module Widgets
         box = Gtk::Box.new(:vertical, 10)
 
         box.append(Bluetooth.new)
-        box.append(Network.new)
+        box.append(Network.new) if Services::DeviceService.laptop?
         box.append(Audio.new.revealer)
         box.append(Power.new)
 
