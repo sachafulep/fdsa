@@ -9,6 +9,7 @@ module Widgets
         add_css_class('bar')
 
         append_top
+        append_middle
         append_bottom
       end
 
@@ -30,14 +31,21 @@ module Widgets
         set_start_widget(box)
       end
 
+      def append_middle
+        box = Gtk::Box.new(:vertical, 10)
+
+        box.append(Clock.new)
+        box.append(Battery.new) if Services::DeviceService.laptop?
+
+        set_center_widget(box)
+      end
+
       def append_bottom
         box = Gtk::Box.new(:vertical, 10)
 
         box.append(Bluetooth.new)
         box.append(Network.new)
         box.append(Audio.new.revealer)
-        box.append(Battery.new) if Services::DeviceService.laptop?
-        box.append(Clock.new)
         box.append(Power.new)
 
         set_end_widget(box)
