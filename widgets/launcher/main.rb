@@ -74,7 +74,8 @@ module Widgets
           'spotify',
           'heroic',
           'steam',
-          'android-studio'
+          'android-studio',
+          'zen'
         ]
       end
 
