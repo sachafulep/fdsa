@@ -22,9 +22,7 @@ module Widgets
 
         box.append(
           Widgets::Generic::Button.new(icon: '') do
-            window = $windows[:launcher]
-
-            window.set_visible(!window.visible?) 
+            Services::WindowService.toggle_window(:launcher)
           end
         )
 
