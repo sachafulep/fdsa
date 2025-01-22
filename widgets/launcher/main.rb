@@ -1,10 +1,8 @@
 module Widgets
   module Launcher
     class Main < Gtk::Box
-      def initialize(window)
+      def initialize
         super(:horizontal)
-
-        @window = window
 
         add_css_class('launcher')
 
@@ -23,7 +21,7 @@ module Widgets
       def entry
         @entry ||= begin
           instance = Gtk::Entry.new
-          
+
           instance.set_can_focus(true)
           instance.set_focusable(true)
           instance.set_sensitive(true)
@@ -50,7 +48,7 @@ module Widgets
           next if @current_text == '' || autocomplete_terms.include?(@current_text)
 
           suggestions = autocomplete_suggestions
-        
+
           if suggestions.any?
             update_text(suggestions.first)
           elsif @current_text.length > entry.position
@@ -62,7 +60,7 @@ module Widgets
 
             update_text(suggestions.first) if suggestions.any?
           end
-        
+
           false
         end
       end
@@ -98,7 +96,7 @@ module Widgets
 
           entry.text = ''
 
-          @window.set_visible(false)
+          Services::WindowService.toggle_window(:launcher)
         end
       end
 
@@ -113,7 +111,7 @@ module Widgets
 
       def label
         instance = Gtk::Label.new('')
-        
+
         instance.add_css_class('launcher__label')
 
         instance
