@@ -52,9 +52,11 @@ module Services
       end
 
       def start_event_listener(callbacks)
-        Thread.new do
+        @listener_thread = Thread.new do
           IO.popen('bluetoothctl') do |bluetooth|
             bluetooth.each_line do |line|
+              break if @stop_thread
+
               line = line.gsub(/\e\[[\d;]*m/, '').sub(/^.*?\[.*?\[/, "[").chomp
 
               next if unwanted_line?(line)
@@ -79,6 +81,10 @@ module Services
             end
           end
         end
+      end
+
+      def stop_event_listener
+        @listener_thread&.kill
       end
 
       private

@@ -15,8 +15,14 @@ module Widgets
         append(@connected_widget)
         append(@paired_widget)
         append(@more_widget)
+      end
 
+      def start_event_listener
         Services::BluetoothService.start_event_listener(callbacks)
+      end
+
+      def stop_event_listener
+        Services::BluetoothService.stop_event_listener
       end
 
       private

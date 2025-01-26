@@ -6,7 +6,7 @@ module Widgets
       FILE_PATH = '/tmp/volume_level'
 
       def initialize
-        File.open(FILE_PATH, 'w').close unless File.exist?(FILE_PATH)  
+        File.open(FILE_PATH, 'w').close unless File.exist?(FILE_PATH)
 
         start_notifier
       end
@@ -25,11 +25,22 @@ module Widgets
 
         box.add_css_class('item')
 
-        volume = `~/Documents/scripts/audio/get_volume.sh`
+        volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
 
-        @volume_label = Gtk::Label.new(volume.gsub(/\n/, ''))
+        @volume_label = Gtk::Label.new(volume)
 
         @volume_label.set_vexpand(false)
+
+        if volume.empty?
+          Thread.new do
+            loop do
+              volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
+              break unless volume.empty?
+              sleep 0.5
+            end
+            handle_volume_change(volume)
+          end
+        end
 
         box.append(icon)
         box.append(@volume_label)
@@ -56,7 +67,7 @@ module Widgets
       end
 
       def handle_volume_change(volume)
-        @volume_label.set_text(volume.gsub(/\n/, ''))
+        @volume_label.set_text(volume)
       end
 
       def icon
@@ -73,7 +84,7 @@ module Widgets
 
               new_line = file.gets
 
-              handle_volume_change(new_line) if new_line
+              handle_volume_change(new_line.gsub(/\n/, '')) if new_line
             end
           end
 

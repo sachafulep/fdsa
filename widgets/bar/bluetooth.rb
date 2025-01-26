@@ -5,7 +5,13 @@ module Widgets
         super(icon: '') do
           Services::WindowService.toggle_window(:bluetooth)
 
-          # window.child.start_connection_monitor if window.visible?
+          window = Services::WindowService.window(:bluetooth)
+
+          if window.visible?
+            window.child.start_event_listener
+          else
+            window.child.stop_event_listener
+          end
         end
       end
     end
