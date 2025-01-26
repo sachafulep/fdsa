@@ -8,7 +8,7 @@ module Windows
       Gtk4LayerShell.set_margin(self, Gtk4LayerShell::Edge::LEFT, 30)
       Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::LEFT, 1)
 
-      set_transient_for($window_main)
+      set_transient_for($windows[:main])
       set_default_size(0, Services::DeviceService.laptop? ? 1007 : 1380)
       set_child(Widgets::Bar::Main.new)
       add_css_class('window-bar')

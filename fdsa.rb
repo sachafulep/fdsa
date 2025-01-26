@@ -15,12 +15,12 @@ loader.push_dir(__dir__)
 loader.setup
 
 $windows = {}
-$window_main
+$widgets = {}
 
 @application = Gtk::Application.new('org.gtk.fdsa', :flags_none)
 
 @application.signal_connect 'activate' do |app|
-  $window_main = Gtk::ApplicationWindow.new(@application)
+  $windows[:main] = Gtk::ApplicationWindow.new(@application)
 
   Windows::Bar.new
   Windows::Launcher.new

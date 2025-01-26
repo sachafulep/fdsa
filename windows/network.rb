@@ -11,7 +11,7 @@ module Windows
 
       @widget_main = Widgets::Network::Main.new
 
-      set_transient_for($window_main)
+      set_transient_for($windows[:main])
       set_child(@widget_main)
       add_css_class('window-network')
       set_visible(false)

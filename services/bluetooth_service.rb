@@ -55,29 +55,11 @@ module Services
         @listener_thread = Thread.new do
           IO.popen('bluetoothctl') do |bluetooth|
             bluetooth.each_line do |line|
-              break if @stop_thread
-
               line = line.gsub(/\e\[[\d;]*m/, '').sub(/^.*?\[.*?\[/, "[").chomp
 
               next if unwanted_line?(line)
 
-              if line =~ /Device\s([0-9A-F]{2}:){5}[0-9A-F]{2}\sConnected:\s(yes|no)/
-                callbacks[:connected].call
-              elsif line =~ /\[NEW\] Device ([0-9A-F:]+) (.+)/i
-                mac_address = $1
-                name = $2
-
-                callbacks[:new].call(Device.new(name, mac_address, false, false))
-              elsif line =~ /\[DEL\]/
-                callbacks[:del].call
-              elsif line =~ /Paired:/
-                ap line
-                callbacks[:paired].call
-              elsif line =~ /Powered:\s(yes|no)/
-                state = line.include?('yes') ? :on : :off
-
-                callbacks[:power].call(state)
-              end
+              handle_device_status(line, callbacks)
             end
           end
         end
@@ -98,6 +80,20 @@ module Services
           'new_settings'
         ].any? do |substring|
           line.include?(substring)
+        end
+      end
+
+      def handle_device_status(line, callbacks)
+        if line =~ /Device\s([0-9A-F]{2}:){5}[0-9A-F]{2}\sConnected:\s(yes|no)/
+          callbacks[:connected].call
+        elsif line =~ /\[NEW\] Device ([0-9A-F:]+) (.+)/i
+          callbacks[:new].call(Device.new($2, $1, false, false))
+        elsif line =~ /\[DEL\]/
+          callbacks[:del].call
+        elsif line =~ /Paired:/
+          callbacks[:paired].call
+        elsif line =~ /Powered:\s(yes|no)/
+          callbacks[:power].call(line.include?('yes') ? :on : :off)
         end
       end
 

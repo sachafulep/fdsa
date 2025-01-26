@@ -42,6 +42,12 @@ module Widgets
         @paired_widget.append_devices
 
         queue_draw
+
+        sleep 5
+
+        volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
+
+        $widgets[:volume].set_text(volume)
       end
     end
   end

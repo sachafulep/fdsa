@@ -10,7 +10,7 @@ module Windows
       Gtk4LayerShell.set_layer(self, Gtk4LayerShell::Layer::TOP)
       Gtk4LayerShell.set_keyboard_mode(self, Gtk4LayerShell::KeyboardMode::EXCLUSIVE)
 
-      set_transient_for($window_main)
+      set_transient_for($windows[:main])
       set_child(Widgets::Launcher::Main.new)
       add_css_class('window-launcher')
       set_can_focus(true)

@@ -27,9 +27,9 @@ module Widgets
 
         volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
 
-        @volume_label = Gtk::Label.new(volume)
+        $widgets[:volume] = Gtk::Label.new(volume)
 
-        @volume_label.set_vexpand(false)
+        $widgets[:volume].set_vexpand(false)
 
         if volume.empty?
           Thread.new do
@@ -43,7 +43,7 @@ module Widgets
         end
 
         box.append(icon)
-        box.append(@volume_label)
+        box.append($widgets[:volume])
       end
 
       def revealer_buttons
@@ -67,7 +67,7 @@ module Widgets
       end
 
       def handle_volume_change(volume)
-        @volume_label.set_text(volume)
+        $widgets[:volume].set_text(volume)
       end
 
       def icon
