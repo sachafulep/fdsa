@@ -11,7 +11,7 @@ module Windows
 
       @widget_main = Widgets::Bluetooth::Main.new
 
-      set_transient_for($window_main)
+      set_transient_for($windows[:main])
       set_child(@widget_main)
       add_css_class('window-bluetooth')
       set_visible(false)

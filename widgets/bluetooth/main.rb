@@ -15,8 +15,14 @@ module Widgets
         append(@connected_widget)
         append(@paired_widget)
         append(@more_widget)
+      end
 
+      def start_event_listener
         Services::BluetoothService.start_event_listener(callbacks)
+      end
+
+      def stop_event_listener
+        Services::BluetoothService.stop_event_listener
       end
 
       private
@@ -36,6 +42,12 @@ module Widgets
         @paired_widget.append_devices
 
         queue_draw
+
+        sleep 5
+
+        volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
+
+        $widgets[:volume].set_text(volume)
       end
     end
   end

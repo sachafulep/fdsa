@@ -73,7 +73,8 @@ module Widgets
           'heroic',
           'steam',
           'android-studio',
-          'zen'
+          'zen',
+          'zeditor'
         ]
       end
 
