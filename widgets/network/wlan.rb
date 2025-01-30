@@ -4,8 +4,8 @@ module Widgets
       def initialize
         super(:vertical, 10)
 
-        append(connected_network)
-        append(known_networks)
+        # append(connected_network)
+        # append(known_networks)
       end
 
       def start_connection_monitor

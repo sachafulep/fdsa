@@ -22,3 +22,9 @@
 .item > :first-child:not(:last-child) {
     margin-bottom: 10px;
 }
+
+.button {
+    border: none;
+    outline: none;
+    background: #b4befe;
+}
