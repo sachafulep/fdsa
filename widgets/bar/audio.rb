@@ -56,7 +56,7 @@ module Widgets
           '': "#{script} #{Services::DeviceService.speaker_device_name}",
           '': "#{script} #{Services::DeviceService.headphone_device_name}"
         }.each do |icon, command|
-          button = Widgets::Generic::Button.new(icon: icon, command: command)
+          button = Widgets::Generic::Button.new(icon: icon) { `#{command}` }
 
           box.append(button)
         end

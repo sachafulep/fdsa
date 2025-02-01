@@ -8,14 +8,14 @@ module Widgets
       private
 
       def trigger
-        Widgets::Generic::Button.new(icon: '', command: 'sudo systemctl poweroff')
+        Widgets::Generic::Button.new(icon: '') { `sudo systemctl poweroff` }
       end
 
       def child
         box = Gtk::Box.new(:vertical, 10)
 
-        suspend = Widgets::Generic::Button.new(icon: '', command: 'sudo systemctl suspend')
-        reboot = Widgets::Generic::Button.new(icon: '', command: 'sudo systemctl reboot')
+        suspend = Widgets::Generic::Button.new(icon: '') { `sudo systemctl suspend` }
+        reboot = Widgets::Generic::Button.new(icon: '') { `sudo systemctl reboot` }
 
         reboot.add_css_class('first-revealer-item')
 

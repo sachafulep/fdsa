@@ -18,6 +18,8 @@ module Widgets
       end
 
       def start_event_listener
+        redraw
+
         Services::BluetoothService.start_event_listener(callbacks)
       end
 

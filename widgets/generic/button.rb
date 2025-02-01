@@ -6,14 +6,12 @@ module Widgets
         icon: '?',
         small: false,
         inverse_colors: false,
-        command: nil,
         &block
       )
         super(orientation)
 
         @icon = Gtk::Label.new(icon)
         @small = small
-        @command = command
         @block = block
 
         add_css_class('item')
@@ -44,14 +42,12 @@ module Widgets
         click_gesture = Gtk::GestureClick.new
 
         click_gesture.signal_connect('pressed') do |gesture, n_press, x, y|
-          Thread.new { system(@command) } if @command
-
           @block.call if @block
         end
-      
+
         add_controller(click_gesture)
       end
-      
+
       def size
         @small ? 25 : 40
       end
