@@ -1,55 +1,29 @@
 module Widgets
   module Generic
-    class Button < Gtk::Box
+    class Button < Gtk::Button
       def initialize(
-        orientation: :vertical,
-        icon: '?',
+        label: '?',
         small: false,
-        inverse_colors: false,
+        inverted_colors: false,
         &block
       )
-        super(orientation)
+        super(label: nil)
 
-        @icon = Gtk::Label.new(icon)
-        @small = small
-        @block = block
+        small = small
+        block = block
 
         add_css_class('item')
-        add_css_class('item--small') if small
-        add_css_class('item--inverse-colors') if inverse_colors
 
-        set_vexpand(false)
-        set_size_request(size, size)
+        add_css_class('button')
+        add_css_class('button--inverted-colors') if inverted_colors
+        add_css_class('button--small') if small
+
+        set_size_request(small ? 25 : 40, small ? 25 : 40)
         set_cursor(Gdk::Cursor.new('pointer'))
 
-        setup_icon
-        set_click_action
-      end
+        set_child(Gtk::Label.new(label))
 
-      def set_icon(icon)
-        @icon.set_text(icon)
-      end
-
-      private
-
-      def setup_icon
-        @icon.set_vexpand(true)
-
-        append(@icon)
-      end
-
-      def set_click_action
-        click_gesture = Gtk::GestureClick.new
-
-        click_gesture.signal_connect('pressed') do |gesture, n_press, x, y|
-          @block.call if @block
-        end
-
-        add_controller(click_gesture)
-      end
-
-      def size
-        @small ? 25 : 40
+        signal_connect "clicked" do block.call if block end
       end
     end
   end

@@ -2,7 +2,7 @@ module Widgets
   module Bar
     class Bluetooth < Widgets::Generic::Button
       def initialize
-        super(icon: '') do
+        super(label: '') do
           Services::WindowService.toggle_window(:bluetooth)
 
           window = Services::WindowService.window(:bluetooth)

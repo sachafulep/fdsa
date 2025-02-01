@@ -21,7 +21,7 @@ module Widgets
         box.set_vexpand(true)
 
         box.append(
-          Widgets::Generic::Button.new(icon: '') do
+          Widgets::Generic::Button.new(label: '') do
             Services::WindowService.toggle_window(:launcher)
           end
         )
@@ -41,28 +41,12 @@ module Widgets
       def append_bottom
         box = Gtk::Box.new(:vertical, 10)
 
-        box.append(fdsa)
-        # box.append(Bluetooth.new)
+        box.append(Bluetooth.new)
         # box.append(Network.new) if Services::DeviceService.laptop?
         box.append(Audio.new.revealer)
         box.append(Power.new)
 
         set_end_widget(box)
-      end
-
-      def fdsa
-        button = Gtk::Button.new(label: "")
-
-        button.signal_connect "clicked" do
-          Services::WindowService.toggle_window(:bluetooth)
-        end
-
-        button.remove_css_class("text-button")
-        button.set_size_request(-1, 40)
-        button.add_css_class('button')
-        button.set_cursor(Gdk::Cursor.new('pointer'))
-
-        button
       end
     end
   end

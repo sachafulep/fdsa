@@ -32,7 +32,7 @@ module Widgets
       end
 
       def button
-        Widgets::Generic::Button.new(icon: '', small: true)
+        Widgets::Generic::Button.new(label: '', small: true)
       end
 
       def icon

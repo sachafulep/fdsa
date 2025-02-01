@@ -5,7 +5,7 @@ module Widgets
         super
 
         @result = Gtk::Label.new('-')
-        
+
         set_hexpand(true)
         set_start_widget(down)
         set_end_widget(start)
@@ -25,14 +25,14 @@ module Widgets
       end
 
       def start
-        button = Widgets::Generic::Button.new(icon: '') do
+        button = Widgets::Generic::Button.new(label: '') do
           Thread.new do
-            button.set_icon('')
+            button.set_label('')
             result = `speedtest --csv --no-upload --secure`
             speed = (result.split(',')[6].to_f / 1000000).to_i
-            
+
             @result.set_text(speed.to_s)
-            button.set_icon('')
+            button.set_label('')
           end
         end
 

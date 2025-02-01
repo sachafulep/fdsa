@@ -2,7 +2,7 @@ module Widgets
   module Bar
     class Network < Widgets::Generic::Button
       def initialize
-        super(icon: '') do
+        super(label: '') do
           Services::WindowService.toggle_window(:network)
         end
       end

@@ -10,7 +10,7 @@ module Widgets
       end
 
       def scan_button
-        Widgets::Generic::Button.new(icon: '', small: true) do
+        Widgets::Generic::Button.new(label: '', small: true) do
           clear_children
 
           @scan_results.clear
