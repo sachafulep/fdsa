@@ -37,14 +37,16 @@ module Widgets
           small: true,
           inverted_colors: @device.connected
         ) do
-          if @device.paired
-            if @device.connected
-              Services::BluetoothService.disconnect_device(@device)
+          Thread.new do
+            if @device.paired
+              if @device.connected
+                Services::BluetoothService.disconnect_device(@device)
+              else
+                Services::BluetoothService.connect_device(@device)
+              end
             else
-              Services::BluetoothService.connect_device(@device)
+              Services::BluetoothService.pair_device(@device)
             end
-          else
-            Services::BluetoothService.pair_device(@device)
           end
         end
       end
