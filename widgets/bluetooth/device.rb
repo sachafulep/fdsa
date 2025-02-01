@@ -1,8 +1,8 @@
 module Widgets
   module Bluetooth
-    class Device < Gtk::CenterBox
+    class Device < Gtk::Box
       def initialize(device)
-        super()
+        super(:horizontal, 10)
 
         @device = device
         @status = Gtk::Label.new('')
@@ -10,10 +10,14 @@ module Widgets
         add_css_class('bluetooth__device')
         add_css_class('bluetooth__device--connected') if device.connected
 
-        set_hexpand(true)
+        label = Gtk::Label.new(device.name)
+        label.set_max_width_chars(24)
+        label.set_ellipsize(3)
+        label.set_hexpand(true)
+        label.set_halign(:start)
 
-        set_start_widget(Gtk::Label.new(device.name))
-        set_end_widget(end_widget)
+        append(label)
+        append(end_widget)
       end
 
       private

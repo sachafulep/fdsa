@@ -4,10 +4,10 @@
 
 .item {
     border-radius: 5px;
-    background-color: #b4befe;
+    background: #b4befe;
     color: #181825;
     padding: 10px 0;
-    min-height: 20px;
+    min-height: 0px;
 }
 
 .item > :first-child:not(:last-child) {
@@ -17,7 +17,6 @@
 .button {
     border: none;
     outline: none;
-    background: #b4befe;
 }
 
 .button--inverted-colors {

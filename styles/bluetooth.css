@@ -1,19 +1,18 @@
 .bluetooth {
-  padding: 20px;
-  min-width: 200px;
+    padding: 20px;
+    min-width: 300px;
 }
 
 .bluetooth__device {
-  color: #ffffff;
-  background-color: #313244;
-  border: 1px solid #b4befe;
-  padding: 8px 8px 8px 10px;
-  border-radius: 5px;
+    color: #ffffff;
+    background-color: #313244;
+    border: 1px solid #b4befe;
+    padding: 8px 8px 8px 10px;
+    border-radius: 5px;
 }
 
 .bluetooth__device--connected {
-  padding: 10px;
-  border-radius: 5px;
-  color: #181825;
-  background-color: #b4befe;
+    border-radius: 5px;
+    color: #181825;
+    background-color: #b4befe;
 }
