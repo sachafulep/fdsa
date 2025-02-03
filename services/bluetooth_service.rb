@@ -57,6 +57,8 @@ module Services
             bluetooth.each_line do |line|
               line = line.gsub(/\e\[[\d;]*m/, '').sub(/^.*?\[.*?\[/, "[").chomp
 
+              ap line
+
               next if unwanted_line?(line)
 
               handle_device_status(line, callbacks)

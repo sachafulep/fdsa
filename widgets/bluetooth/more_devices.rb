@@ -10,12 +10,23 @@ module Widgets
       end
 
       def scan_button
-        Widgets::Generic::Button.new(label: '', small: true) do
+        button = Widgets::Generic::Button.new(label: '', small: true) do
           clear_children
 
           @scan_results.clear
 
           Services::BluetoothService.scan
+
+          Thread.new do
+            spinner = Gtk::Spinner.new
+            spinner.start
+            button.update_child(spinner)
+
+            sleep(60)
+            spinner.stop
+
+            button.update_child(Gtk::Label.new(''))
+          end
         end
       end
 
@@ -24,7 +35,9 @@ module Widgets
 
         @scan_results[device.mac_address] = device
 
-        @device_box.append(Widgets::Bluetooth::Device.new(device))
+        return if device.name.match?(/^[A-Za-z0-9]{2}(-[A-Za-z0-9]{2}){5}$/)
+
+        @device_box.prepend(Widgets::Bluetooth::Device.new(device))
 
         queue_draw
       end

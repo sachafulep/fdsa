@@ -25,6 +25,10 @@ module Widgets
         signal_connect('clicked') { block.call if block }
       end
 
+      def update_child(child)
+        set_child(child)
+      end
+
       private
 
       def default_child
