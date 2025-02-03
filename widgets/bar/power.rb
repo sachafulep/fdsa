@@ -8,8 +8,8 @@ module Widgets
       private
 
       def trigger
-        button = Widgets::Generic::Button.new(label: '') do
-          button.label = revealed? ? '' : ''
+        @button = Widgets::Generic::Button.new(label: '') do
+          set_trigger_button_label(revealed? ? '' : '')
         end
       end
 
@@ -35,6 +35,12 @@ module Widgets
         end
 
         hide
+
+        set_trigger_button_label('')
+      end
+
+      def set_trigger_button_label(label)
+        @button.label = label
       end
     end
   end
