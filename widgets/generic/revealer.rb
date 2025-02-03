@@ -4,12 +4,25 @@ module Widgets
       def initialize(trigger: nil, child: nil)
         super(:vertical, 0)
 
+        unless trigger.is_a?(Gtk::Button)
+          raise ArgumentError, "trigger must be a Gtk::Button"
+        end
+
+        @trigger = trigger
         @child = child
 
-        set_revealer_signals
+        set_revealer_signal
 
         append(revealer)
         append(trigger)
+      end
+
+      def revealed?
+        revealer.reveal_child?
+      end
+
+      def hide
+        revealer.set_reveal_child(false)
       end
 
       private
@@ -26,18 +39,10 @@ module Widgets
         end
       end
 
-      def set_revealer_signals
-        motion_controller = Gtk::EventControllerMotion.new
-
-        motion_controller.signal_connect('enter') do |controller, event|
-          revealer.set_reveal_child(true)
+      def set_revealer_signal
+        @trigger.signal_connect('clicked') do
+          revealer.set_reveal_child(!revealed?)
         end
-
-        motion_controller.signal_connect('leave') do |controller, event|
-          revealer.set_reveal_child(false)
-        end
-
-        add_controller(motion_controller)
       end
     end
   end

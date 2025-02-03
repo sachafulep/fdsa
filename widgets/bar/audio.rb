@@ -2,28 +2,21 @@ require 'rb-inotify'
 
 module Widgets
   module Bar
-    class Audio < Gtk::Box
+    class Audio < Widgets::Generic::Revealer
       FILE_PATH = '/tmp/volume_level'
 
       def initialize
+        super(trigger: trigger, child: child)
+
         File.open(FILE_PATH, 'w').close unless File.exist?(FILE_PATH)
 
         start_notifier
       end
 
-      def revealer
-        trigger = revealer_trigger
-        child = revealer_buttons
-
-        Widgets::Generic::Revealer.new(trigger: trigger, child: child)
-      end
-
       private
 
-      def revealer_trigger
-        box = Gtk::Box.new(:vertical)
-
-        box.add_css_class('item')
+      def trigger
+        box = Gtk::Box.new(:vertical, 10)
 
         volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
 
@@ -44,9 +37,11 @@ module Widgets
 
         box.append(icon)
         box.append($widgets[:volume])
+
+        Widgets::Generic::Button.new(child: box)
       end
 
-      def revealer_buttons
+      def child
         box = Gtk::Box.new(:vertical, 10)
         script = '~/Documents/scripts/audio/change_sink.sh'
         button = nil
@@ -56,7 +51,11 @@ module Widgets
           '': "#{script} #{Services::DeviceService.speaker_device_name}",
           '': "#{script} #{Services::DeviceService.headphone_device_name}"
         }.each do |label, command|
-          button = Widgets::Generic::Button.new(label: label) { `#{command}` }
+          button = Widgets::Generic::Button.new(label: label) do
+           `#{command}`
+
+           hide
+          end
 
           box.append(button)
         end

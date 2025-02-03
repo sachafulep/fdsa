@@ -43,7 +43,7 @@ module Widgets
 
         box.append(Bluetooth.new)
         # box.append(Network.new) if Services::DeviceService.laptop?
-        box.append(Audio.new.revealer)
+        box.append(Audio.new)
         box.append(Power.new)
 
         set_end_widget(box)
