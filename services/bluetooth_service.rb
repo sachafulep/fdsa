@@ -57,8 +57,6 @@ module Services
             bluetooth.each_line do |line|
               line = line.gsub(/\e\[[\d;]*m/, '').sub(/^.*?\[.*?\[/, "[").chomp
 
-              ap line
-
               next if unwanted_line?(line)
 
               handle_device_status(line, callbacks)
@@ -79,23 +77,27 @@ module Services
           'Waiting to connect to bluetoothd',
           'Pairable:',
           'Discovering:',
-          'new_settings'
+          'new_settings',
+          'Endpoint',
+          'Transport',
+          'ServicesResolved',
+          'is nil'
         ].any? do |substring|
           line.include?(substring)
         end
       end
 
       def handle_device_status(line, callbacks)
-        if line =~ /Device\s([0-9A-F]{2}:){5}[0-9A-F]{2}\sConnected:\s(yes|no)/
+        if line =~ /Connected/
           callbacks[:connected].call
-        elsif line =~ /\[NEW\] Device ([0-9A-F:]+) (.+)/i
-          callbacks[:new].call(Device.new($2, $1, false, false))
+        elsif line =~ /Paired/
+          callbacks[:paired].call
+        elsif line =~ /Powered/
+          callbacks[:power].call(line.include?('yes') ? :on : :off)
         elsif line =~ /\[DEL\]/
           callbacks[:del].call
-        elsif line =~ /Paired:/
-          callbacks[:paired].call
-        elsif line =~ /Powered:\s(yes|no)/
-          callbacks[:power].call(line.include?('yes') ? :on : :off)
+        elsif line =~ /\[NEW\] Device ([0-9A-F:]+) (.+)/i
+          callbacks[:new].call(Device.new($2, $1, false, false))
         end
       end
 

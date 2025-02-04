@@ -19,8 +19,6 @@ module Widgets
 
       def start_event_listener
         Services::BluetoothService.start_event_listener(callbacks)
-
-        redraw_devices
       end
 
       def stop_event_listener
@@ -42,11 +40,11 @@ module Widgets
       def redraw
         redraw_devices
 
-        sleep 5
+        # sleep 5
 
-        volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
+        # volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
 
-        $widgets[:volume].set_text(volume)
+        # $widgets[:volume].set_text(volume)
       end
 
       def redraw_devices

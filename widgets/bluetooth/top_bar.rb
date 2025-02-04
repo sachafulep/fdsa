@@ -13,7 +13,9 @@ module Widgets
         @powered = Services::BluetoothService.powered?
         @color = @powered ? COLORS[:green] : COLORS[:red]
 
-        set_start_widget(Gtk::Label.new('Bluetooth'))
+        label = Gtk::Label.new('Bluetooth')
+        label.add_css_class('bluetooth__header')
+        set_start_widget(label)
         set_end_widget(power_switch)
       end
 

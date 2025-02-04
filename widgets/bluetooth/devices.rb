@@ -5,20 +5,26 @@ module Widgets
         super(:vertical, 10)
 
         @state = state
-        @device_box = Gtk::Box.new(:vertical, 10)
         @devices = devices(@state)
 
         @top_bar = Gtk::CenterBox.new
         @top_bar.set_start_widget(Gtk::Label.new(@state.capitalize))
 
+        @device_box = Gtk::Box.new(:vertical, 10)
+        @scrolled_window = scrolled_window
+
         append(@top_bar)
-        append(devices_widget)
+        append(@scrolled_window)
+
+        resize_scrolled_window
 
         append_devices
       end
 
       def append_devices
         clear_children
+
+        @devices = devices(@state)
 
         if @devices.length == 0
           label = Gtk::Label.new('...')
@@ -27,6 +33,8 @@ module Widgets
         else
           @devices.each {|device| @device_box.append(device) }
         end
+
+        resize_scrolled_window
       end
 
       def devices(state)
@@ -43,15 +51,24 @@ module Widgets
 
       private
 
-      def devices_widget
-        if @state == :more || @devices.length > 3
-          scrolled_window = Gtk::ScrolledWindow.new
-          scrolled_window.set_child(@device_box)
-          scrolled_window.set_policy(:never, :automatic)
-          scrolled_window.set_size_request(-1, 149)
-        else
-          @device_box
-        end
+      def scrolled_window
+        scrolled_window = Gtk::ScrolledWindow.new
+        scrolled_window.set_child(@device_box)
+        scrolled_window.set_policy(:never, :automatic)
+        scrolled_window
+      end
+
+      def resize_scrolled_window
+        height =
+          if @devices.length > 3 || @state == :more
+            150
+          else
+            50 * @devices.length
+          end
+
+        @scrolled_window.set_size_request(-1, height)
+
+        @scrolled_window.queue_draw
       end
     end
   end

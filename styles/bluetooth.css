@@ -3,6 +3,11 @@
     min-width: 300px;
 }
 
+.bluetooth__header {
+    font-size: x-large;
+    font-weight: 700;
+}
+
 .bluetooth__device {
     color: #ffffff;
     background-color: #313244;
