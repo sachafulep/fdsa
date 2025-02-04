@@ -17,12 +17,12 @@ module Widgets
         append(@more_widget)
       end
 
-      def start_event_listener
-        Services::BluetoothService.start_event_listener(callbacks)
+      def start_bluetooth_listener
+        Services::Bluetooth::Listener.start(callbacks)
       end
 
-      def stop_event_listener
-        Services::BluetoothService.stop_event_listener
+      def stop_bluetooth_listener
+        Services::Bluetooth::Listener.stop
       end
 
       private
@@ -33,7 +33,7 @@ module Widgets
           new: @more_widget.method(:append_scan_result),
           del: method(:redraw),
           paired: @more_widget.method(:clear_scan_results),
-          power: @top_bar.method(:update_power_indicator)
+          powered: @top_bar.method(:update_power_indicator)
         }
       end
 

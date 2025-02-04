@@ -8,9 +8,9 @@ module Widgets
           window = Services::WindowService.window(:bluetooth)
 
           if window.visible?
-            window.child.start_event_listener
+            window.child.start_bluetooth_listener
           else
-            window.child.stop_event_listener
+            window.child.stop_bluetooth_listener
           end
         end
       end
