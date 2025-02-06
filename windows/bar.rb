@@ -1,20 +1,14 @@
 module Windows
-  class Bar < Gtk::Window
+  class Bar < Window
     def initialize
-      super
+      super(:bar)
 
-      Gtk4LayerShell.init_for_window(self)
       Gtk4LayerShell.auto_exclusive_zone_enable(self)
       Gtk4LayerShell.set_margin(self, Gtk4LayerShell::Edge::LEFT, 30)
       Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::LEFT, 1)
 
-      set_transient_for($windows[:main])
       set_default_size(0, Services::DeviceService.laptop? ? 1007 : 1380)
-      set_child(Widgets::Bar::Main.new)
-      add_css_class('window-bar')
       set_visible(true)
-
-      $windows[:bar] = self
     end
   end
 end

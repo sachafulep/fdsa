@@ -1,9 +1,9 @@
 module System
-  class Css_loader
+  class CssLoader
     class << self
       def load
         css_provider.load(data: css_data)
-      
+
         Gtk::StyleContext.add_provider_for_display(
           Gdk::Display.default,
           css_provider,

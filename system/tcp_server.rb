@@ -1,28 +1,36 @@
 require 'socket'
 
 module System
-  class Tcp_server
+  class TcpServer
     class << self
       def start
         server = TCPServer.new(12345)
 
         Thread.new do
-          loop do
-            client = server.accept
-
-            Thread.new(client) do |conn|
-              begin
-                params = conn.gets&.chomp&.split
-
-                if params && !params.empty?
-                  Services::WindowService.toggle_window(params.first.to_sym)
-                end
-              ensure
-                conn.close
-              end
-            end
-          end
+          loop { handle_client(server.accept) }
         end
+      end
+
+      private
+
+      def handle_client(client)
+        Thread.new(client) do |conn|
+          process_request(conn)
+        end
+      end
+
+      def process_request(conn)
+        begin
+          params = parse_request(conn.gets)
+
+          Services::WindowService.toggle_window(params.first.to_sym) if params.any?
+        ensure
+          conn.close
+        end
+      end
+
+      def parse_request(request)
+        request&.chomp&.split || []
       end
     end
   end
