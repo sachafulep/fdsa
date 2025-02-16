@@ -10,6 +10,8 @@ module Widgets
 
         File.open(FILE_PATH, 'w').close unless File.exist?(FILE_PATH)
 
+        set_volume
+
         start_notifier
       end
 
@@ -18,24 +20,10 @@ module Widgets
       def trigger
         box = Gtk::Box.new(:vertical, 10)
 
-        volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
-
-        $widgets[:volume] = Gtk::Label.new(volume)
-
+        $widgets[:volume] = Gtk::Label.new('')
         $widgets[:volume].set_vexpand(false)
 
-        if volume.empty?
-          Thread.new do
-            loop do
-              volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
-              break unless volume.empty?
-              sleep 0.5
-            end
-            handle_volume_change(volume)
-          end
-        end
-
-        box.append(icon)
+        box.append(Gtk::Label.new(''))
         box.append($widgets[:volume])
 
         Widgets::Generic::Button.new(child: box)
@@ -65,12 +53,22 @@ module Widgets
         box
       end
 
-      def handle_volume_change(volume)
-        $widgets[:volume].set_text(volume)
+      def set_volume
+        Thread.new do
+          volume = nil
+
+          loop do
+            volume = `~/Documents/scripts/audio/get_volume.sh`
+            break unless volume.empty?
+            sleep 0.5
+          end
+
+          handle_volume_change(volume)
+        end
       end
 
-      def icon
-        Gtk::Label.new('')
+      def handle_volume_change(volume)
+        $widgets[:volume].set_text(volume.gsub(/\n/, ''))
       end
 
       def start_notifier
@@ -83,7 +81,7 @@ module Widgets
 
               new_line = file.gets
 
-              handle_volume_change(new_line.gsub(/\n/, '')) if new_line
+              handle_volume_change(new_line) if new_line
             end
           end
 
