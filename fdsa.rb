@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+ENV['GTK_THEME'] = 'Adwaita'
+
 require 'bundler/setup'
 require 'ap'
 require 'zeitwerk'
