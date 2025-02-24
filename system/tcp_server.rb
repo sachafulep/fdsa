@@ -28,7 +28,11 @@ module System
           name = params.first
           state = params.last
 
-          Services::WindowService.set_window(name.to_sym, state == 'true')
+          if params.length == 1
+            Services::WindowService.toggle_window(name.to_sym)
+          else
+            Services::WindowService.set_window(name.to_sym, state == 'true')
+          end
         ensure
           conn.close
         end
