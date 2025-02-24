@@ -105,6 +105,8 @@ module Widgets
         case command
         when 'spotify'
           'spotify-launcher'
+        when 'code'
+          'ELECTRON_OZONE_PLATFORM_HINT=wayland code'
         else
           command
         end
