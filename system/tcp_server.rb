@@ -23,7 +23,12 @@ module System
         begin
           params = parse_request(conn.gets)
 
-          Services::WindowService.toggle_window(params.first.to_sym) if params.any?
+          return if params.empty?
+
+          name = params.first
+          state = params.last
+
+          Services::WindowService.set_window(name.to_sym, state == 'true')
         ensure
           conn.close
         end
