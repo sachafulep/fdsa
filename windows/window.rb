@@ -6,7 +6,7 @@ module Windows
       Gtk4LayerShell.init_for_window(self)
 
       set_transient_for($windows[:main])
-
+      set_title("fdsa-#{name}")
       set_child(Widgets.const_get(name.capitalize)::Main.new)
 
       add_css_class("window-#{name}")

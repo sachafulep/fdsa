@@ -2,15 +2,18 @@ module Services
   class WindowService
     class << self
       def toggle_window(name)
-        window(name).set_visible(!window(name).visible?)
+        window = window(name)
+        state = !window(name).visible?
 
-        perform_side_effects
+        perform_side_effects(name, state)
+
+        window.set_visible(state)
       end
 
       def set_window(name, state)
-        window(name).set_visible(state)
+        perform_side_effects(name, state)
 
-        perform_side_effects if !state
+        window(name).set_visible(state)
       end
 
       def window(name)
@@ -21,7 +24,9 @@ module Services
 
       private
 
-      def perform_side_effects
+      def perform_side_effects(name, state)
+        return if state
+
         hide_children if name == :bar
         clear_launcher if name == :launcher
       end
@@ -32,7 +37,7 @@ module Services
       end
 
       def clear_launcher
-        window(:launcher).child.entry.text = ''
+        window(:launcher).child.children.first.children.last.text = ''
       end
     end
   end

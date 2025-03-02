@@ -10,8 +10,15 @@ module Widgets
 
         enable_autocomplete
 
-        append(label)
-        append(entry)
+        add_dismisser
+
+        box = Gtk::Box.new(:horizontal)
+
+        box.add_css_class('launcher__widget')
+        box.append(label)
+        box.append(entry)
+
+        append(box)
       end
 
       def grab_focus
@@ -34,6 +41,16 @@ module Widgets
       end
 
       private
+
+      def add_dismisser
+        gesture = Gtk::GestureClick.new
+        
+        gesture.signal_connect("pressed") do
+          Services::WindowService.set_window(:launcher, false)
+        end
+
+        add_controller(gesture)
+      end
 
       def enable_autocomplete
         @handler = entry.signal_connect('changed') do
@@ -67,14 +84,12 @@ module Widgets
 
       def autocomplete_terms
         terms = [
-          'firefox',
           'code',
           'spotify',
           'heroic',
           'steam',
           'android-studio',
-          'zen',
-          'zeditor'
+          'zen'
         ]
       end
 

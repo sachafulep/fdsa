@@ -2,7 +2,7 @@ module Widgets
   module Bluetooth
     class Main < Gtk::Box
       def initialize
-        super(:vertical, 30)
+        super(:vertical)
 
         add_css_class('bluetooth')
 
@@ -11,10 +11,18 @@ module Widgets
         @paired_widget = Devices.new(:paired)
         @more_widget = MoreDevices.new
 
-        append(@top_bar)
-        append(@connected_widget)
-        append(@paired_widget)
-        append(@more_widget)
+        add_dismisser
+
+        box = Gtk::Box.new(:vertical, 30)
+
+        box.add_css_class('bluetooth__widget')
+
+        box.append(@top_bar)
+        box.append(@connected_widget)
+        box.append(@paired_widget)
+        box.append(@more_widget)
+
+        append(box)
       end
 
       def start_bluetooth_listener
@@ -28,6 +36,16 @@ module Widgets
       end
 
       private
+
+      def add_dismisser
+        gesture = Gtk::GestureClick.new
+        
+        gesture.signal_connect("pressed") do
+          Services::WindowService.set_window(:bluetooth, false)
+        end
+
+        add_controller(gesture)
+      end
 
       def callbacks
         {

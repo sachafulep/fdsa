@@ -1,4 +1,12 @@
 .bar {
+    padding: 20px 8px 20px 0;
+}
+
+.bar__widget {
+    min-height: 1361px;
+    background-color: #313244;
+    box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.4);
+    border-radius: 7px;
     padding: 10px;
 }
 

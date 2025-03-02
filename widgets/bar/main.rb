@@ -1,21 +1,27 @@
 module Widgets
   module Bar
-    class Main < Gtk::CenterBox
+    class Main < Gtk::Box
       def initialize
-        super
-
-        set_orientation(:vertical)
+        super(:vertical)
 
         add_css_class('bar')
 
-        append_top
-        append_middle
-        append_bottom
+        center_box = Gtk::CenterBox.new
+
+        center_box.add_css_class('bar__widget')
+
+        center_box.set_orientation(:vertical)
+
+        center_box.set_start_widget(top)
+        center_box.set_center_widget(middle)
+        center_box.set_end_widget(bottom)
+
+        append(center_box)
       end
 
       private
 
-      def append_top
+      def top
         box = Gtk::Box.new(:vertical, 10)
 
         box.set_vexpand(true)
@@ -26,19 +32,19 @@ module Widgets
           end
         )
 
-        set_start_widget(box)
+        box
       end
 
-      def append_middle
+      def middle
         box = Gtk::Box.new(:vertical, 10)
 
         box.append(Clock.new)
         box.append(Battery.new) if Services::DeviceService.laptop?
 
-        set_center_widget(box)
+        box
       end
 
-      def append_bottom
+      def bottom
         box = Gtk::Box.new(:vertical, 10)
 
         box.append(Bluetooth.new)
@@ -46,7 +52,7 @@ module Widgets
         box.append(Audio.new)
         box.append(Power.new)
 
-        set_end_widget(box)
+        box
       end
     end
   end

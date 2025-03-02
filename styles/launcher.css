@@ -1,4 +1,10 @@
 .launcher {
+    padding: 600px 1400px 800px 1300px;
+}
+
+.launcher__widget {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+    background-color: #313244;
     border: 1px solid #cdd6f4;
     border-radius: 7px;
     padding: 20px;

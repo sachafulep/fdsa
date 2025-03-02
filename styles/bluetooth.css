@@ -1,4 +1,11 @@
 .bluetooth {
+    padding: 1000px 2980px 30px 20px;
+}
+
+.bluetooth__widget {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 7px;
+    background-color: #313244;
     padding: 20px;
     min-width: 300px;
 }

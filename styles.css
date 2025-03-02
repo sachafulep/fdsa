@@ -1,8 +1,8 @@
 .window-bar,
-.window-launcher,
 .window-network,
+.window-launcher,
 .window-bluetooth {
-    background-color: #313244;
+    background-color: #00000000;
 }
 
 .window-launcher, .window-network, .window-bluetooth {
