@@ -40,7 +40,12 @@ module Widgets
       def add_dismisser
         gesture = Gtk::GestureClick.new
         
-        gesture.signal_connect("pressed") do
+        gesture.signal_connect("pressed") do |_, _, x, y|
+          within_x = x > 0 && x < 340
+          within_y = y > 0 && y < 500
+          
+          next if within_x && within_y
+ 
           Services::WindowService.set_window(:bluetooth, false)
         end
 
