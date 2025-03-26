@@ -79,7 +79,7 @@ module Widgets
             File.open(FILE_PATH, 'r') do |file|
               file.seek(0, IO::SEEK_SET)
 
-              new_line = file.gets
+              new_line = file.gets.gsub(/\n/, '')
 
               handle_volume_change(new_line) if new_line
             end
