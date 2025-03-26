@@ -58,8 +58,8 @@ module Widgets
           volume = nil
 
           loop do
-            volume = `~/Documents/scripts/audio/get_volume.sh`
-            break unless volume.empty?
+            volume = `~/Documents/scripts/audio/get_volume.sh`.gsub(/\n/, '')
+            break unless volume.empty? || volume.nil?
             sleep 0.5
           end
 
@@ -68,7 +68,7 @@ module Widgets
       end
 
       def handle_volume_change(volume)
-        $widgets[:volume].set_text(volume.gsub(/\n/, ''))
+        $widgets[:volume].set_text(volume)
       end
 
       def start_notifier
