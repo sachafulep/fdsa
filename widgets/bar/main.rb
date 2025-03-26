@@ -9,6 +9,7 @@ module Widgets
         center_box = Gtk::CenterBox.new
 
         center_box.add_css_class('bar__widget')
+        center_box.add_css_class('bar__widget--laptop') if Services::DeviceService.laptop?
 
         center_box.set_orientation(:vertical)
 

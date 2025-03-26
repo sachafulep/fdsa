@@ -10,6 +10,10 @@
     padding: 10px;
 }
 
+.bar__widget--laptop {
+    min-height: 986px;
+}
+
 .item {
     border-radius: 5px;
     background: #b4befe;

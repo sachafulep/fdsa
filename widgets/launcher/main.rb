@@ -5,6 +5,7 @@ module Widgets
         super(:horizontal)
 
         add_css_class('launcher')
+        add_css_class('launcher--laptop') if Services::DeviceService.laptop?
 
         connect_signals
 

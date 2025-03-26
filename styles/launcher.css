@@ -2,6 +2,10 @@
     padding: 600px 1400px 800px 1300px;
 }
 
+.launcher--laptop {
+    padding: 400px 1000px 0 1050px;
+}
+
 .launcher__widget {
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
     background-color: #313244;
