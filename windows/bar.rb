@@ -8,6 +8,7 @@ module Windows
       Gtk4LayerShell.set_anchor(self, Gtk4LayerShell::Edge::LEFT, 1)
 
       set_visible(true)
+      set_visible(false)
     end
   end
 end
